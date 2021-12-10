@@ -1,10 +1,13 @@
 const express=require('express')
-const cors=require('cors');
+var cors=require('cors');
 const fs=require('fs');
 require('dotenv').config();
 // import connectToMongo from './db';
 const connectToMongo=require('./db.js');
 const app=express();
+app.use(cors({
+    origin:["http://localhost:3000"]
+}));
 
 // database connection
 connectToMongo();
@@ -12,7 +15,6 @@ connectToMongo();
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors());
 
 // autoload routes
 fs.readdirSync("./routes").map((r)=>app.use("/api",require(`./routes/${r}`)));

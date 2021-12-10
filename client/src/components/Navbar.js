@@ -1,6 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { Link ,useHistory } from 'react-router-dom'
+import { userContext } from '../context'
 const Navbar = () => {
+  const history=useHistory();
+  const [state,setState]=useContext(userContext);
+
+  const logout=()=>{
+    window.localStorage.removeItem('auth')
+    setState(null);
+    history.push('/login');
+  }
+
+
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -25,18 +38,36 @@ const Navbar = () => {
               </li>
             </ul>
 
-            <ul class="nav navbar-nav navbar-right">
+
+            {state!==null ? (
+              <ul className="nav navbar-nav navbar-right">
                 <li>
-                    <div class="btn-nav">
-                      <Link class="btn btn-primary btn-sm navbar-btn mx-2" to="/register">Register</Link>
+                    <div className="btn-nav">
+                      <h5><span className="badge bg-light text-dark">Hello, {state.user.name}</span></h5>
                     </div>
                 </li>
                 <li>
-                    <div class="btn-nav">
-                      <Link class="btn btn-primary btn-sm navbar-btn" to="/login">Login</Link>
+                    <div className="btn-nav">
+                      <Link onClick={logout} className="btn btn-primary btn-sm navbar-btn" to="/login">Logout</Link>
+                    </div>
+                </li>
+              </ul>
+            ) : (
+              <ul className="nav navbar-nav navbar-right">
+                <li>
+                    <div className="btn-nav">
+                      <Link className="btn btn-primary btn-sm navbar-btn mx-2" to="/register">Register</Link>
+                    </div>
+                </li>
+                <li>
+                    <div className="btn-nav">
+                      <Link className="btn btn-primary btn-sm navbar-btn" to="/login">Login</Link>
                     </div>
                 </li>
             </ul>
+            )}
+
+            
           </div>
         </div>
       </nav>

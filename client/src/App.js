@@ -1,38 +1,35 @@
-import './App.css';
-import Body from './components/Body';
-import Login from './components/Login';
-import Navbar from './components/Navbar';
-import Register from './components/Register';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { UserProvider } from "./context/index";
+import "./App.css";
+import Body from "./components/Body";
+import Login from "./components/Login";
+import Navbar from "./components/Navbar";
+import Register from "./components/Register";
+import { ToastContainer } from "react-toastify";
+import "antd/dist/antd.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
   return (
-    <Router>
-      {/* <Navbar/>
-      {/* <Body/> */}
-      {/* <Register/> */}
-      {/* <Login/>  */}
+    <UserProvider>
+      <Router>
+        <Switch>
+          <Route exact path="/login">
+            <ToastContainer position="top-center" />
+            <Login />
+          </Route>
 
-      <Switch>
-        
-        <Route exact path="/login">
-          <Login />
-        </Route>
+          <Route exact path="/register">
+            <ToastContainer position="top-center" />
+            <Register />
+          </Route>
 
-        <Route exact path="/register">
-          <Register />
-        </Route>
-
-        <Route exact path="/">
-          <Navbar />
-          <Body />
-        </Route>
-      </Switch>
-
-    </Router>
+          <Route exact path="/">
+            <Navbar />
+            <ToastContainer position="top-center" />
+            <Body />
+          </Route>
+        </Switch>
+      </Router>
+    </UserProvider>
   );
 }
 

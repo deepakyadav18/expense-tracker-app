@@ -1,10 +1,46 @@
 import React from 'react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react'
+import { Link,useHistory } from 'react-router-dom';
+import axios from 'axios'
+import {toast} from 'react-toastify'
+import {ToastContainer} from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
+import {userContext} from "../context/index";
+
 const Login = () => {
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
+    const [state,setState]=useContext(userContext);
+    const history=useHistory();
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        
+        try{
+            // console.log(name,email.password,secret);
+            const {data}=await axios.post(`http://localhost:8000/api/login`,{
+                email,password
+            })
+            setState({
+                user:data.user,
+                token:data.token
+            })
+            
+            // save in localStorage
+            window.localStorage.setItem('auth',JSON.stringify(data))
+
+            history.push('/');
+        } catch(err){
+            toast.error(err.response.data)
+        }
+    }
+
+    if(state && state.token){
+        history.push('/');
+    }
+    
+
     return (
+        
         <div className="container-fluid">
             <h1 className="text-center my-3">Personal Expense Tracker</h1>
             <div className="col text-center py-5">
@@ -14,7 +50,7 @@ const Login = () => {
             <div className="row py-2">
                 <div className="col-md-6 offset-md-3">
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
 
                         <div className="form-group p-2">
                             <label className="text-muted">Email Address</label>
@@ -41,7 +77,7 @@ const Login = () => {
                     <p className="text-center">
                         Not yet registered? 
                         <Link to="/register">
-                            <a>Register Here</a>
+                            Register Here
                         </Link>
                     </p>
                 </div>

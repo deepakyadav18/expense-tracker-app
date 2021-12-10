@@ -37,7 +37,7 @@ const login = async(req,res)=>{
 
         // check password
         const match=await comparePassword(password,user.password);
-        if(!match) return res.status(400).send("Wrong password");
+        if(!match) return res.status(400).send("Wrong password or Wrong Email");
 
         // creating signed token
         const token=jwt.sign({_id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"}) 
