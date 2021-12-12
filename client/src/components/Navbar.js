@@ -25,7 +25,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Home</a>
+                <a className="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">Budget</a>
@@ -34,7 +34,7 @@ const Navbar = () => {
                 <a className="nav-link active" aria-current="page" href="#">Loan/Debt Management</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Manage Account</a>
+                <a className="nav-link active" aria-current="page" href="/manage">Manage Account</a>
               </li>
             </ul>
 
@@ -43,7 +43,7 @@ const Navbar = () => {
               <ul className="nav navbar-nav navbar-right">
                 <li>
                     <div className="btn-nav">
-                      <h5><span className="badge bg-light text-dark">Hello, {state.user.name}</span></h5>
+                      <h5><span className="badge bg-light text-dark ">Hello, {state.user.name}</span></h5>
                     </div>
                 </li>
                 <li>
@@ -56,12 +56,12 @@ const Navbar = () => {
               <ul className="nav navbar-nav navbar-right">
                 <li>
                     <div className="btn-nav">
-                      <Link className="btn btn-primary btn-sm navbar-btn mx-2" to="/register">Register</Link>
+                      <Link className="btn btn-primary btn-sm navbar-btn mx-2 my-1" to="/register">Register</Link>
                     </div>
                 </li>
                 <li>
                     <div className="btn-nav">
-                      <Link className="btn btn-primary btn-sm navbar-btn" to="/login">Login</Link>
+                      <Link className="btn btn-primary btn-sm navbar-btn mx-2 my-1" to="/login">Login</Link>
                     </div>
                 </li>
             </ul>

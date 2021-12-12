@@ -4,6 +4,7 @@ import Body from "./components/Body";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
+import Manage from "./components/Manage";
 import { ToastContainer } from "react-toastify";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -27,6 +28,13 @@ function App() {
             <ToastContainer position="top-center" />
             <Body />
           </Route>
+          
+          <Route exact path="/manage">
+            <Navbar />
+            <ToastContainer position="top-center" />
+            <Manage/>
+          </Route>
+
         </Switch>
       </Router>
     </UserProvider>
