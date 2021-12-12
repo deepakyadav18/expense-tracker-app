@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import Manage from "./components/Manage";
+import Debt from "./components/Debt";
 import { ToastContainer } from "react-toastify";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -33,6 +34,12 @@ function App() {
             <Navbar />
             <ToastContainer position="top-center" />
             <Manage/>
+          </Route>
+
+          <Route exact path="/debt">
+            <Navbar />
+            <ToastContainer position="top-center" />
+            <Debt/>
           </Route>
 
         </Switch>

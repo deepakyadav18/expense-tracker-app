@@ -31,7 +31,7 @@ const Navbar = () => {
                 <a className="nav-link active" aria-current="page" href="#">Budget</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Loan/Debt Management</a>
+                <a className="nav-link active" aria-current="page" href="/debt">Loan/Debt Management</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="/manage">Manage Account</a>
