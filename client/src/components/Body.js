@@ -1,9 +1,15 @@
 import React from 'react'
-import ExpenseTable from './ExpenseTable'
-import { useState } from 'react';
-
+import { useState , useContext , useEffect } from 'react';
+import {userContext} from "../context/index";
+import axios from 'axios';
+import {toast} from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
+import UserRoute from './routes/UserRoute';
+import { useHistory } from 'react-router-dom';
+import Expense from './Expense';
 const Body = () => {
 
+    const [state,setState]=useContext(userContext);
     const [type, setType] = useState("");
     const [InterestType, setInterestType] = useState("");
     const [desc, setDesc] = useState("");
@@ -12,8 +18,58 @@ const Body = () => {
     const [cat, setCat] = useState("");
     const [date, setDate] = useState(Date.now());
 
+    const[expenses,setExpenses]=useState([]);
+    const history=useHistory();
+
+    const AddTransaction=async(e)=>{
+        e.preventDefault();
+        
+        try{
+            const {data}=await axios.post("http://localhost:8000/api/addexpense",{type,desc,amount,cat,date},{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            });
+            console.log("res=>",data);
+            if(data.error){
+                toast.error(data.error)
+            }
+            else{
+                fetchUserExpenses();
+                toast.success("Expense added");
+                setType("");
+                setInterestType("");
+                setAmount("");
+                setPercentage("");
+                setCat("");
+                setDate(Date.now());
+            }
+            
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        if(state && state.token)  fetchUserExpenses();
+    }, [state && state.token])
+
+    const fetchUserExpenses=async()=>{
+        try{
+            const {data}=await axios.get("http://localhost:8000/api/showexpenses",{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            })
+            setExpenses(data);
+            console.log("user expenses=>",data);
+        } catch(err){
+            console.log(err);
+        }
+    }
+
     return (
-        <>
+        <UserRoute>
             <h1 className="text-center my-3">Personal Expense Tracker</h1>
             <div className="container">
                 <button type="button" className="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Expense
@@ -145,8 +201,8 @@ const Body = () => {
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss Transaction</button>
-                                <button type="button" class="btn btn-primary">Add Transaction</button>
+                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss Transaction</button>
+                                <button onClick={AddTransaction} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary">Add Transaction</button>
                             </div>
                         </div>
                     </div>
@@ -154,10 +210,24 @@ const Body = () => {
                 <button type="button" className="btn btn-success mx-3">Expense Report</button>
             </div>
             <div className="container">
-                <ExpenseTable />
+                <table class="table my-5">
+                    <thead>
+                        <tr>
+                            <th scope="col">Transaction Id</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Expense Date</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Expense expenses={expenses} setExpenses={setExpenses} />
+                    </tbody>
+                </table>
             </div>
 
-        </>
+        </UserRoute>
     )
 }
 

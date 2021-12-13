@@ -1,7 +1,21 @@
 import React from 'react'
 import Expense from './Expense'
 
-const ExpenseTable = () => {
+const ExpenseTable = ({type,
+    setType,
+    InterestType,
+    desc,
+    amount,
+    percentage,
+    cat,
+    date,
+    setDesc,
+    setInterestType,
+    setAmount,
+    setPercentage,
+    setCat,
+    setDate,
+    AddTransaction}) => {
     return (
         <>
             <table class="table my-5">
@@ -16,9 +30,9 @@ const ExpenseTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <Expense id="#123" name="Goa Trip" amount="100000"
-                    date="21/03/2002"
-                    category="Pleasure"/>
+                    <Expense id="#123" desc={desc} amount={amount}
+                    date={date}
+                    category={cat}/>
                 </tbody>
             </table>
         </>
