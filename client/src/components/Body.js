@@ -124,7 +124,7 @@ const Body = () => {
                                                     <label class="col-form-label">Transaction Date</label>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <input type="date" class="form-control" placeholder='Enter Transaction Date' />
+                                                    <input type="date" class="form-control" value={date} onChange={(e) => { setDate(e.target.value) }}/>
                                                 </div>
                                             </div>
                                             {type=='Debt'?<><div class="row g-3 align-items-center">

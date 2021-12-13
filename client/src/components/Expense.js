@@ -1,13 +1,27 @@
-import React from 'react'
+import {React,useContext} from 'react'
+import axios from 'axios';
+import {userContext} from "../context/index";
 import { useLocation } from 'react-router-dom';
 const Expense = ({expenses,setExpenses}) => {
 
-    const handleEdit=(e)=>{
-        e.preventDefault();
+    const [state,setState]=useContext(userContext);
+
+    const handleEdit= async(id)=>{
+        const {data}=await axios.put(`http://localhost:8000/api/updateexpense/${id}`,{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            });
 
     }
 
-    const handleDelete=(id)=>{
+    const handleDelete=async(id)=>{
+
+        const {data}=await axios.delete(`http://localhost:8000/api/deleteexpense/${id}`,{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            });
         const newExpenses=expenses.filter((expense)=> {return expense._id!==id});
         setExpenses(newExpenses);
     }
@@ -23,9 +37,10 @@ const Expense = ({expenses,setExpenses}) => {
                 <td>{expense.date}</td>
                 <td>{expense.cat}</td>
                 <td>
-                <button onClick={handleEdit} type="button" className="btn btn-primary btn-sm mx-1">Edit
+                {/* <button onClick={()=>{handleEdit(expense._id)}} type="button" className="btn btn-primary btn-sm mx-1">Edit
                 </button>
-                <button onClick={handleDelete} type="button" className="btn btn-danger btn-sm mx-1">Delete
+                 */}
+                <button onClick={()=>{handleDelete(expense._id)}} type="button" className="btn btn-danger btn-sm mx-1">Delete
                 </button>
                 </td>
                 </tr>
