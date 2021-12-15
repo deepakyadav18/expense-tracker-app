@@ -2,7 +2,6 @@ const express=require('express')
 const router=express.Router();
 
 const { requireSignin } = require('../middlewares/auth');
-
 const {addExpense, showExpenses,updateExpense,deleteExpense} = require('../controllers/expense');
 
 router.post('/addexpense',requireSignin,addExpense);

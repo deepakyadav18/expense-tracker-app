@@ -5,4 +5,5 @@ const { requireSignin } = require('../middlewares/auth');
 router.post('/register',register);
 router.post('/login',login);
 router.get('/currentuser',requireSignin,currentUser);
+
 module.exports=router;
