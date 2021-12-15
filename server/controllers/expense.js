@@ -11,9 +11,18 @@ const addExpense= async(req,res)=>{
         date,}=req.body;
 
     const {_id}=req.user;
-    if(!desc.length || !amount.length ){
+    var flag=true;
+    
+    for(var i=0;i<amount.length;i++){
+        if((amount[i]-'0')<0 || (amount[i]-'0')>9){
+            flag=false;
+            break;
+        }
+    }
+
+    if(!desc.length || !amount.length || !flag || !type.length || !cat.length){
         return res.json({
-            error:'Content is required',
+            error:'Fill All The Required Details Correcty.',
         })
     };
     try{

@@ -13,8 +13,8 @@ const Body = () => {
     const [type, setType] = useState("");
     const [InterestType, setInterestType] = useState("");
     const [desc, setDesc] = useState("");
-    const [amount, setAmount] = useState("");
-    const [percentage, setPercentage] = useState("");
+    const [amount, setAmount] = useState("0");
+    const [percentage, setPercentage] = useState("0");
     const [cat, setCat] = useState("");
     const [date, setDate] = useState(Date.now());
 
@@ -23,7 +23,7 @@ const Body = () => {
 
     const AddTransaction=async(e)=>{
         e.preventDefault();
-        
+          
         try{
             const {data}=await axios.post("http://localhost:8000/api/addexpense",{type,desc,amount,cat,date},{
                 headers:{
@@ -37,17 +37,19 @@ const Body = () => {
             else{
                 fetchUserExpenses();
                 toast.success("Expense added");
-                setType("");
-                setInterestType("");
-                setAmount("");
-                setPercentage("");
-                setCat("");
-                setDate(Date.now());
             }
             
         } catch(err){
             console.log(err);
         }
+
+        setType("");
+                setInterestType("");
+                setAmount("");
+                setPercentage("");
+                setCat("");
+                setDate(Date.now());
+                setDesc("");
     }
 
     useEffect(() => {
@@ -94,7 +96,7 @@ const Body = () => {
                                                         <option selected>Select Transaction Type</option>
                                                         <option value="Debit">Debit</option>
                                                         <option value="Credit">Credit</option>
-                                                        <option value="Debt">Debt/Loan</option>
+                                                        <option value="Debt/Loan">Debt/Loan</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -127,14 +129,13 @@ const Body = () => {
                                                     <input type="date" class="form-control" value={date} onChange={(e) => { setDate(e.target.value) }}/>
                                                 </div>
                                             </div>
-                                            {type=='Debt'?<><div class="row g-3 align-items-center">
+                                            {type=='Debt/Loan'?<><div class="row g-3 align-items-center">
                                                 <div class="col-auto">
                                                     <label class="col-form-label">Interest Type</label>
                                                 </div>
                                                 <div class="col-auto">
                                                     <select value={InterestType} onChange={(e) => { setInterestType(e.target.value) }} class="form-select form-select-sm" aria-label=".form-select-sm example">
-                                                        <option selected>Select Transaction Type</option>
-                                                        <option value="Simple">Simple Interest</option>
+                                                        <option selected value="Simple">Simple Interest</option>
                                                         <option value="Compound">Compound Interest</option>
                                                     </select>
                                                 </div>
@@ -156,37 +157,37 @@ const Body = () => {
                                                     {type === 'Credit' ?
                                                         <select value={cat} onChange={(e) => { setCat(e.target.value) }} class="form-select form-select-sm" aria-label=".form-select-sm example">
                                                             <option selected>Select Credit Option</option>
-                                                            <option value="salary">Salary</option>
-                                                            <option value="other_income">Other Income</option>
+                                                            <option value="Salary">Salary</option>
+                                                            <option value="Other Income">Other Income</option>
                                                         </select> : (type === 'Debit' ?
                                                             <select value={cat} onChange={(e) => { setCat(e.target.value) }} class="form-select form-select-sm" aria-label=".form-select-sm example">
                                                                 <option selected>Select Debit Option </option>
-                                                                <option value="food">Food And Beverage</option>
-                                                                <option value="trans">Transportation</option>
-                                                                <option value="rent">Rentals</option>
-                                                                <option value="water">Water And Electricty</option>
-                                                                <option value="phone">Phone and Internet</option>
-                                                                <option value="gas">Gas/LPG</option>
-                                                                <option value="stream">Streaming Services</option>
-                                                                <option value="home">Home Maintainence</option>
-                                                                <option value="vehicle">Vehicle Maintainence</option>
-                                                                <option value="medical">Medical Checkup</option>
-                                                                <option value="insurance">Insurance</option>
-                                                                <option value="education">Education</option>
-                                                                <option value="personal">Personal Expense</option>
-                                                                <option value="pet">Pets</option>
-                                                                <option value="fitness">Fitness</option>
-                                                                <option value="gifts">Gifts And Donations</option>
-                                                                <option value="inv">Investments</option>
-                                                                <option value="loan">Loan Interest</option>
-                                                                <option value="others">Other Expense</option>
-                                                            </select> : (type === 'Debt' ?
+                                                                <option value="Food And Beverage">Food And Beverage</option>
+                                                                <option value="Transportation">Transportation</option>
+                                                                <option value="Rentals">Rentals</option>
+                                                                <option value="Water And Electricity">Water And Electricty</option>
+                                                                <option value="Phone and Internet">Phone and Internet</option>
+                                                                <option value="Gas/LPG">Gas/LPG</option>
+                                                                <option value="Streaming Services">Streaming Services</option>
+                                                                <option value="Home Maintainence">Home Maintainence</option>
+                                                                <option value="Vehicle Maintainence">Vehicle Maintainence</option>
+                                                                <option value="Medical Checkup">Medical Checkup</option>
+                                                                <option value="Insurance">Insurance</option>
+                                                                <option value="Education">Education</option>
+                                                                <option value="Personal Expense">Personal Expense</option>
+                                                                <option value="Pets">Pets</option>
+                                                                <option value="Fitness">Fitness</option>
+                                                                <option value="Gifts And Donations">Gifts And Donations</option>
+                                                                <option value="Investments">Investments</option>
+                                                                <option value="Loan Interest">Loan Interest</option>
+                                                                <option value="Other Expenses">Other Expense</option>
+                                                            </select> : (type === 'Debt/Loan' ?
                                                                 <select value={cat} onChange={(e) => { setCat(e.target.value) }} class="form-select form-select-sm" aria-label=".form-select-sm example">
                                                                     <option selected>Select Debt/Loan Option</option>
-                                                                    <option value="collection">Debt Collection</option>
-                                                                    <option value="debt">Debt</option>
-                                                                    <option value="loan">Loan</option>
-                                                                    <option value="repay">Repayment</option>
+                                                                    <option value="Debt Collection">Debt Collection</option>
+                                                                    <option value="Debt">Debt</option>
+                                                                    <option value="Loan">Loan</option>
+                                                                    <option value="Repayment">Repayment</option>
                                                                 </select> :
                                                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                                                                     <option selected>Select Type First</option>

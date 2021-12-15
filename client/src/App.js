@@ -9,6 +9,7 @@ import Debt from "./components/Debt";
 import { ToastContainer } from "react-toastify";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Budget from "./components/Budget";
 function App() {
   return (
     <UserProvider>
@@ -34,6 +35,12 @@ function App() {
             <Navbar />
             <ToastContainer position="top-center" />
             <Manage/>
+          </Route>
+
+          <Route exact path="/budget">
+            <Navbar />
+            <ToastContainer position="top-center" />
+            <Budget/>
           </Route>
 
           <Route exact path="/debt">

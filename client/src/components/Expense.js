@@ -34,7 +34,7 @@ const Expense = ({expenses,setExpenses}) => {
                 <td>{(expense._id).slice(expense._id.length-5,expense._id.length)}</td>
                 <td>{expense.desc}</td>
                 <td>{expense.amount}</td>
-                <td>{expense.date}</td>
+                <td>{(expense.date).slice(0,10)}</td>
                 <td>{expense.cat}</td>
                 <td>
                 {/* <button onClick={()=>{handleEdit(expense._id)}} type="button" className="btn btn-primary btn-sm mx-1">Edit
