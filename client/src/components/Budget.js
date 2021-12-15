@@ -1,11 +1,17 @@
 import React from 'react'
+import {useState} from 'react'
+
 
 const Budget = () => {
+    const [needs, setNeeds] = useState(50);
+    const [wants, setWants] = useState(30);
+    const [saves, setSaves] = useState(20);
+
     return (
         <div className="container">
             <h1 className="text-center my-3">Personal Expense Tracker</h1>
             <div className="col text-center p-4">
-                <h3>Manage Budget</h3>
+                <h3>Manage Budget</h3>  
             </div>
             <div className="container">
                 <div className="d-flex justify-content-center">
@@ -15,29 +21,29 @@ const Budget = () => {
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
-                        A simple secondary alert—check it out!
+                        <b>Neccesities(Spent):-</b>
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
-                        A simple primary alert—check it out!
+                        <b>Neccesities(Calculated):-</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
-                        A simple secondary alert—check it out!
+                    <b>Wants(Saved):-</b>
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
-                        A simple primary alert—check it out!
+                        <b>Wants(Calculated):-</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
-                        A simple secondary alert—check it out!
+                    <b>Savings(Saved):-</b>
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
-                        A simple primary alert—check it out!
+                        <b>Savings(Calculated):-</b>
                     </div>
                 </div>
 
@@ -54,15 +60,15 @@ const Budget = () => {
                                 <form class="d-flex justify-content-between">
                                     <div class="form-group">
                                         <label for="per_nes">Enter Neccesities Percentage</label>
-                                        <input type="text" class="form-control" id="per_nes" aria-describedby="emailHelp" placeholder="Enter Percentage" v />
+                                        <input value={needs} onChange={(e) => { setNeeds(e.target.value) }} type="text" class="form-control" placeholder="Enter Percentage" v />
                                     </div>
                                     <div class="form-group">
                                         <label for="per_want">Enter Wants Percentage</label>
-                                        <input type="text" class="form-control" id="per_want" aria-describedby="emailHelp" placeholder="Enter Percentage" />
+                                        <input value={wants} onChange={(e) => { setWants(e.target.value) }} type="text" class="form-control" placeholder="Enter Percentage" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="(100-per_nes-per_want)">Enter Wants Percentage</label>
-                                        <input type="text" class="form-control" id="(100-per_nes-per_want)" aria-describedby="emailHelp" placeholder="Enter Percentage" />
+                                        <label for="(100-per_nes-per_want)">Enter Savings Percentage</label>
+                                        <input value={saves} onChange={(e) => { setSaves(e.target.value) }} type="text" class="form-control" placeholder="Percentage" />
                                     </div>
 
                                 </form>
@@ -70,7 +76,7 @@ const Budget = () => {
                             </div>
                             <div class="modal-footer">
                                 <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary">Adjust Budget</button>
+                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary">Save Changes</button>
                             </div>
                         </div></div> </div>
             </div>
