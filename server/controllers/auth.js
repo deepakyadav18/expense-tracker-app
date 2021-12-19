@@ -1,6 +1,7 @@
 const {hashPassword,comparePassword} = require("../helpers/auth")
 const User=require("../models/user")
 const jwt=require('jsonwebtoken')
+const Expense=require("../models/expense");
 const Budget=require("../models/Budget");
 const {defaultBudget}=require('./budget');
 const register =async(req,res)=>{
@@ -74,4 +75,18 @@ const currentUser=async(req,res)=>{
     }
 }
 
-module.exports={register,login,currentUser}
+const deleteUser=async(req,res)=>{
+    const {_id}=req.user;
+    const {email}=req.body.email;
+    try{
+
+        const expense=await Expense.deleteMany({"user":_id});
+        const budget=await Budget.deleteOne(email);
+        const user=await User.findByIdAndDelete(_id);
+        res.json("Deleted")
+    } catch(err){
+        console.log(err);
+    }
+}
+
+module.exports={register,login,currentUser,deleteUser}

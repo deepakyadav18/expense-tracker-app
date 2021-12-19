@@ -8,17 +8,14 @@ const budgetSchema = new Schema ({
     wants:{
         type:Number,
         required:true,
-        default:30,
     },
     saves:{
         type:Number,
         required:true,
-        default:20,
     },
     needs:{
         type:Number,
         required:true,
-        default:50,
     }
 },{timestamps:true})
 

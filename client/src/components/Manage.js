@@ -1,7 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import {React} from 'react';
+import { Link,useHistory } from 'react-router-dom';
+import {useContext} from 'react'
+import {userContext} from "../context/index";
+import axios from 'axios';
 
 const Manage = () => {
+    const history=useHistory();
+    const [state,setState]=useContext(userContext);
+
+    const deleteAccount=async()=>{
+        try{
+            const {data}=await axios.delete("http://localhost:8000/api/deleteUser",{email:state.user.email},{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            })
+            // window.localStorage.removeItem('auth');
+            // setState(null);
+            // history.push('/login');
+        } catch(err){
+            console.log(err);
+        }
+    }
+
     return (
         <div className="container-fluid">
             <h1 className="text-center my-3">Personal Expense Tracker</h1>
@@ -78,7 +99,7 @@ const Manage = () => {
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-                                        <button type="button" class="btn btn-danger">Delete Account</button>
+                                        <button onClick={state&& state.token && deleteAccount} type="button" class="btn btn-danger">Delete Account</button>
                                     </div>
                                 </div>
                             </div>

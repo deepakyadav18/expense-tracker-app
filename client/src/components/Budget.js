@@ -8,6 +8,8 @@ const Budget = () => {
     const [wants, setWants] = useState(30);
     const [saves, setSaves] = useState(20);
     const [income,setIncome]=useState(0);
+    const [sneeds,setSneeds]=useState(0);
+    const [swants,setSwants]=useState(0);
     const [state,setState]=useContext(userContext);
     const fetchTotalMoney=async()=>{
         try{
@@ -32,7 +34,22 @@ const Budget = () => {
             setSaves(data.saves);
             setWants(data.wants);
             setNeeds(data.needs);
-            console.log("N, w, s ",data);
+            // console.log("N, w, s ",data);
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+    const Debit=async()=>{
+        try{
+            const {data}=await axios.get("http://localhost:8000/api/debit",{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            })
+            setSneeds(data.need);
+            setSwants(data.want);
+            console.log("n, w ",data);
         } catch(err){
             console.log(err);
         }
@@ -58,7 +75,9 @@ const Budget = () => {
 
     useEffect(() => {
         if(state&& state.token){fetchTotalMoney();
-        getBudget();}
+        getBudget();
+        Debit();
+    }
     }, [state&& state.token])
     
 
@@ -71,12 +90,12 @@ const Budget = () => {
             <div className="container">
                 <div className="d-flex justify-content-center">
                     <div class="alert alert-success text-center" role="alert" style={{ width: "100%" }}>
-                        <b>Total Income:{income}</b>
+                        <b>Total Income: {income}</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
-                        <b>Neccesities(Spent):</b>
+                        <b>Neccesities(Spent): {sneeds}</b>
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
@@ -85,16 +104,16 @@ const Budget = () => {
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
-                    <b>Wants(Saved):-</b>
+                    <b>Wants(Spent): {swants}</b>
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
-                        <b>Wants(Calculated):- {(wants*income)/100}</b>
+                        <b>Wants(Calculated): {(wants*income)/100}</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
-                    <b>Savings(Saved):-</b>
+                    <b>Savings(Saved): {income-sneeds-swants}</b>
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>

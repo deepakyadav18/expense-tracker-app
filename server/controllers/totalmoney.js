@@ -5,10 +5,7 @@ const totalMoney=async(req,res)=>{
         const expenses=await Expense.find({user:req.user._id});
         var total=0;
         expenses.forEach(expense => {
-           if(expense.type==="Debit"){
-                total-=Number(expense.amount);
-           }
-           else if(expense.type==="Credit"){
+            if(expense.type==="Credit"){
                total+=Number(expense.amount);
            }
         });
@@ -18,4 +15,24 @@ const totalMoney=async(req,res)=>{
     }
 }
 
-module.exports={totalMoney};
+const Debit=async(req,res)=>{
+    try{
+        const expenses=await Expense.find({user:req.user._id});
+        var want=0,need=0;
+        expenses.forEach(expense => {
+           if(expense.type==="Debit"){
+                var ec=expense.cat;
+                if(ec=="Streaming Services" || ec=="Personal Expense" || ec=="Pets" || ec=="Fitness" || ec=="Gifts and Donations" || ec=="Investments" || ec=="Other Expenses"){
+                    want+=Number(expense.amount);
+                }
+                else{
+                    need+=Number(expense.amount);
+                }
+           }
+        });
+        res.json({want,need});
+    } catch(err){
+        console.log(err);
+    }
+}
+module.exports={totalMoney,Debit};
