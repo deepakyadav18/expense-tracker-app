@@ -1,5 +1,5 @@
 import React from 'react'
-import { useContext } from 'react'
+import { useContext,useEffect } from 'react'
 import { Link ,useHistory } from 'react-router-dom'
 import { userContext } from '../context'
 const Navbar = () => {
@@ -11,7 +11,6 @@ const Navbar = () => {
     setState(null);
     history.push('/login');
   }
-
 
 
   return (

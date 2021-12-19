@@ -1,12 +1,20 @@
-import {React} from 'react';
+import {React,useState} from 'react';
 import { Link,useHistory } from 'react-router-dom';
-import {useContext} from 'react'
+import {useContext,useEffect} from 'react'
 import {userContext} from "../context/index";
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css"
 
 const Manage = () => {
+    var auth=JSON.parse(localStorage.getItem('auth'));
+
     const history=useHistory();
     const [state,setState]=useContext(userContext);
+    const [oldp,setOldp]=useState("");
+    const [newp,setNewp]=useState("");
+    const [name,setName]=useState(auth.user.name);
+    const [email,setEmail]=useState(auth.user.email);
 
     const deleteAccount=async()=>{
         try{
@@ -27,6 +35,68 @@ const Manage = () => {
         }
     }
 
+    const changePassword=async()=>{
+        try{
+            const {data}=await axios.put("http://localhost:8000/api/changePassword",{
+                email:state.user.email,
+                name:state.user.name,
+                newp:newp,
+                oldp:oldp
+            },{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                },
+            })
+            if(data.error){
+                toast.error(data.error);
+            }
+            else{
+                toast.success("Password changed successfully.")
+            }
+            
+            setNewp("");
+            setOldp("");
+
+        } catch(err){
+            console.log(err);
+        }
+
+    }
+
+    const editUser=async(e)=>{
+
+        e.preventDefault();
+
+        try{
+            const {data}=await axios.put("http://localhost:8000/api/editUser",{
+                email:email,
+                name:name,
+            },{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                },
+            })
+            
+            if(data.error){
+                toast.error(data.error);
+            }
+            else{
+                
+                var auth=JSON.parse(localStorage.getItem('auth'));
+                auth.user.name=name;
+                auth.user.email=email;
+                localStorage.setItem('auth',JSON.stringify(auth));
+                history.go(0);
+            }
+            
+
+        } catch(err){
+            console.log(err);
+        }
+        
+    }
+
+
     return (
         <div className="container-fluid">
             <h1 className="text-center my-3">Personal Expense Tracker</h1>
@@ -40,16 +110,16 @@ const Manage = () => {
                     <form>
                         <div className="form-group p-2">
                             <label className="text-muted">Your Name</label>
-                            <input type="text" className="form-control" placeholder="Enter Name"></input>
+                            <input value={name} onChange={(e)=>setName(e.target.value)} type="text" className="form-control" placeholder="Enter Name"></input>
                         </div>
 
                         <div className="form-group p-2">
                             <label className="text-muted">Email Address</label>
-                            <input type="email" className="form-control" placeholder="Enter Email Address"></input>
+                            <input value={email} onChange={(e)=>setEmail(e.target.value)} type="email" className="form-control" placeholder="Enter Email Address"></input>
                         </div>
 
                         <div className="form-group p-2">
-                            <button className="btn btn-primary col-12">
+                            <button onClick={editUser} className="btn btn-primary col-12">
                                 Apply Changes
                             </button>
                         </div>
@@ -69,19 +139,14 @@ const Manage = () => {
                                     <div class="modal-body">
                                         <div class="d-flex flex-column bd-highlight mb-3">
                                             <label for="inputPassword5" className="form-label">Enter Old Password</label>
-                                            <input type="password" class="form-control" />
+                                            <input value={oldp} onChange={(e)=>setOldp(e.target.value)} type="password" class="form-control" />
                                             <label for="inputPassword5" className="form-label">Enter New Password</label>
-                                            <input type="password" class="form-control" />
-                                            <label for="inputPassword5" className="form-label">Confirm New Password</label>
-                                            <input type="password" class="form-control" />
-                                            <div className="form-text">
-                                                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-                                            </div>
+                                            <input value={newp} onChange={(e)=>setNewp(e.target.value)} type="password" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-                                        <button type="button" class="btn btn-primary">Change Password</button>
+                                        <button onClick={changePassword} type="button" class="btn btn-primary" data-bs-dismiss="modal">Change Password</button>
                                     </div>
                                 </div>
                             </div>

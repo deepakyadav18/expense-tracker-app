@@ -89,4 +89,65 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-module.exports={register,login,currentUser,deleteUser}
+const changePassword=async(req,res)=>{
+    
+    const {name,email,oldp,newp}=req.body;
+
+    try {
+
+         if(!oldp ||!newp ) return res.json({
+            error:'Fill All The Given Blanks.',
+        })
+        //return res.status(400).send("Fill All The Given Blanks Correctly.");
+
+        var user=await User.findOne({email});
+        
+        const match=await comparePassword(oldp,user.password);
+        if(!match) return res.json({
+            error:'Wrong Old Password.',
+        })
+
+        const hashedPassword=await hashPassword(newp);
+
+        const newUser={
+            name:name,
+            email:email,
+            password:hashedPassword
+        };
+
+        user=await User.findOneAndUpdate({email},{$set:newUser},{new:true});
+        
+        res.json(user);
+    } catch (error) {
+        console.log(error);
+    }
+
+    
+}
+
+const editUser=async(req,res)=>{
+    const {name,email}=req.body;
+    const {_id}=req.user;
+    try {
+
+        if(!name ||!email ) return res.json({
+           error:'Fill All The Given Blanks.',
+        })
+       //return res.status(400).send("Fill All The Given Blanks Correctly.");
+
+       var user=await User.findOne({_id});
+
+        const newUser={
+            name:name,
+            email:email
+        };
+
+       user=await User.findByIdAndUpdate(_id,{$set:newUser},{new:true});
+       
+       res.json(user);
+   } catch (error) {
+       console.log(error);
+   }
+}
+
+module.exports={register,login,currentUser,deleteUser,changePassword,editUser}
