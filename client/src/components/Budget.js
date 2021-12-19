@@ -1,11 +1,66 @@
 import React from 'react'
-import {useState} from 'react'
-
+import {useState,useContext,useEffect} from 'react'
+import {userContext} from "../context/index";
+import axios from 'axios';
 
 const Budget = () => {
     const [needs, setNeeds] = useState(50);
     const [wants, setWants] = useState(30);
     const [saves, setSaves] = useState(20);
+    const [income,setIncome]=useState(0);
+    const [state,setState]=useContext(userContext);
+    const fetchTotalMoney=async()=>{
+        try{
+            const {data}=await axios.get("http://localhost:8000/api/totalMoney",{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            })
+            setIncome(data);
+            console.log("Income ",data);
+        } catch(err){
+            console.log(err);
+        }
+    }
+    const getBudget=async()=>{
+        try{
+            const {data}=await axios.get("http://localhost:8000/api/getBudget",{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            })
+            setSaves(data.saves);
+            setWants(data.wants);
+            setNeeds(data.needs);
+            console.log("N, w, s ",data);
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+    const editBudget=async()=>{
+        try{
+            const {data}=await axios.post("http://localhost:8000/api/editBudget",{saves,needs,wants,email:state.user.email},{
+                headers:{
+                    Authorization:'Bearer '+state.token
+                }
+            })
+            setSaves(data.saves);
+            setWants(data.wants);
+            setNeeds(data.needs);
+            getBudget();
+            console.log("N, w, s ",data);
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+
+    useEffect(() => {
+        if(state&& state.token){fetchTotalMoney();
+        getBudget();}
+    }, [state&& state.token])
+    
 
     return (
         <div className="container">
@@ -16,16 +71,16 @@ const Budget = () => {
             <div className="container">
                 <div className="d-flex justify-content-center">
                     <div class="alert alert-success text-center" role="alert" style={{ width: "100%" }}>
-                        <b>Total Income:-</b>
+                        <b>Total Income:{income}</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
-                        <b>Neccesities(Spent):-</b>
+                        <b>Neccesities(Spent):</b>
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
-                        <b>Neccesities(Calculated):-</b>
+                        <b>Neccesities(Calculated): {(needs*income)/100}</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
@@ -34,7 +89,7 @@ const Budget = () => {
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
-                        <b>Wants(Calculated):-</b>
+                        <b>Wants(Calculated):- {(wants*income)/100}</b>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
@@ -43,7 +98,7 @@ const Budget = () => {
                     </div>
                     <div class="alert alert-primary" role="alert"
                         style={{ width: "40%" }}>
-                        <b>Savings(Calculated):-</b>
+                        <b>Savings(Calculated): {(saves*income)/100}</b>
                     </div>
                 </div>
 
@@ -76,7 +131,7 @@ const Budget = () => {
                             </div>
                             <div class="modal-footer">
                                 <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary">Save Changes</button>
+                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary" onClick={editBudget}>Save Changes</button>
                             </div>
                         </div></div> </div>
             </div>

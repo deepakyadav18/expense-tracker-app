@@ -30,7 +30,7 @@ const Body = () => {
                     Authorization:'Bearer '+state.token
                 }
             });
-            console.log("res=>",data);
+            // console.log("res=>",data);
             if(data.error){
                 toast.error(data.error)
             }

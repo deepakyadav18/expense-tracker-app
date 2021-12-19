@@ -1,21 +1,21 @@
 const Budget=require("../models/Budget");
 
-const defaultBudget=async(req,res)=>{
-    const {email}=req.body;
-    try{
+// const defaultBudget=async(req,res)=>{
+//     const {email}=req.body;
+//     try{
 
-        const budget=await Budget.create({
-            email,
-            saves:20,
-            needs:50,
-            wants:30,
-        })
-        res.send(budget);
+//         const budget=await Budget.create({
+//             email,
+//             saves:20,
+//             needs:50,
+//             wants:30,
+//         })
+//         res.send(budget);
 
-    } catch(err){
-        console.log(err);
-    }
-}
+//     } catch(err){
+//         console.log(err);
+//     }
+// }
 
 const editBudget=async(req,res)=>{
     const {email}=req.body;
@@ -23,11 +23,11 @@ const editBudget=async(req,res)=>{
         const {wants,needs,saves}=req.body;
         const newBudget={};
 
-        if(!(wants>=0 && wants<=100 && needs>=0 && needs<=100 && saves>=0 && saves<=100 && (wants+needs+saves)==100)){
-            return res.json({
-                error:"Enter all percentages accordingly."
-            })
-        }
+        // if(!(wants>=0 && wants<=100 && needs>=0 && needs<=100 && saves>=0 && saves<=100 && (wants+needs+saves)==100)){
+        //     return res.json({
+        //         error:"Enter all percentages accordingly."
+        //     })
+        // }
         
         if(wants){
             newBudget.wants=wants;
@@ -62,4 +62,4 @@ const getBudget=async(req,res)=>{
     }
 }
 
-module.exports={editBudget,defaultBudget,getBudget};
+module.exports={editBudget,getBudget};

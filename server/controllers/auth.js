@@ -1,7 +1,8 @@
 const {hashPassword,comparePassword} = require("../helpers/auth")
 const User=require("../models/user")
 const jwt=require('jsonwebtoken')
-
+const Budget=require("../models/Budget");
+const {defaultBudget}=require('./budget');
 const register =async(req,res)=>{
     // console.log("Register endpoint =>",req.body);
     const {name,email,password}=req.body;
@@ -16,9 +17,17 @@ const register =async(req,res)=>{
     const hashedPassword=await hashPassword(password);
 
     const user=new User({name,email,password:hashedPassword});
+    const budget=new Budget({
+                    email,
+                    saves:20,
+                    needs:50,
+                    wants:30,
+                });
+
 
     try{
         await user.save();
+        await budget.save();
         console.log("Registered user=>",user)
         return res.json({
             ok:true,

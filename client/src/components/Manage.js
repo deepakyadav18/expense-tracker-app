@@ -61,7 +61,7 @@ const Manage = () => {
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-dangers" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
                             Delete Account
                         </button>
 
