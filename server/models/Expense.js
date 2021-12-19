@@ -32,6 +32,9 @@ const expenseSchema = new Schema ({
     percentage:{
         type:String,
     },
+    report:{
+        type:String,
+    }
 
 
 },{timestamps:true})

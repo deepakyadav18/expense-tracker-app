@@ -10,14 +10,18 @@ const Manage = () => {
 
     const deleteAccount=async()=>{
         try{
-            const {data}=await axios.delete("http://localhost:8000/api/deleteUser",{email:state.user.email},{
+            const {data}=await axios.delete("http://localhost:8000/api/deleteUser",{
                 headers:{
                     Authorization:'Bearer '+state.token
+                },
+                data:{
+                    email:state.user.email
                 }
             })
-            // window.localStorage.removeItem('auth');
-            // setState(null);
-            // history.push('/login');
+            window.localStorage.removeItem('auth');
+            setState(null);
+            history.push('/login');
+            history.go(0);
         } catch(err){
             console.log(err);
         }
