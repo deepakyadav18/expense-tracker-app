@@ -26,10 +26,10 @@ const Manage = () => {
                     email:state.user.email
                 }
             })
-            window.localStorage.removeItem('auth');
             setState(null);
             history.push('/login');
             history.go(0);
+            window.localStorage.removeItem('auth');
         } catch(err){
             console.log(err);
         }

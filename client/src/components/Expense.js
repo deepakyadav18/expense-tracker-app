@@ -2,7 +2,7 @@ import {React,useContext} from 'react'
 import axios from 'axios';
 import {userContext} from "../context/index";
 import { useLocation } from 'react-router-dom';
-const Expense = ({expenses,setExpenses}) => {
+const Expense = ({expenses,setExpenses,mul}) => {
 
     const [state,setState]=useContext(userContext);
 
@@ -33,7 +33,7 @@ const Expense = ({expenses,setExpenses}) => {
                 <tr key={(expense._id)}>
                 <td>{(expense._id).slice(expense._id.length-5,expense._id.length)}</td>
                 <td>{expense.desc}</td>
-                <td>{expense.amount}</td>
+                <td>{Math.round(Number(expense.amount)*Number(mul)*100)/100}</td>
                 <td>{(expense.date).slice(0,10)}</td>
                 <td>{expense.cat}</td>
                 <td>

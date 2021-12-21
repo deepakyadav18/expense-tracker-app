@@ -17,9 +17,22 @@ const Body = () => {
     const [percentage, setPercentage] = useState("0");
     const [cat, setCat] = useState("");
     const [date, setDate] = useState(Date.now());
+    const[curr1,setCurr1]=useState("INR");
+    const[curr2,setCurr2]=useState("INR");
+    const[mul,setMul]=useState(1);
 
     const[expenses,setExpenses]=useState([]);
     const history=useHistory();
+
+    const currency=async()=>
+    {
+        let {data}=await axios.get(`https://api.fastforex.io/fetch-one?from=${curr1}&to=${curr2}&api_key=f454927b42-879011f180-r4gbj6`);
+
+        console.log(data.result[curr2])
+        setMul(data.result[curr2]);
+        setCurr1(curr2);
+        setCurr2(curr2);
+    }
 
     const AddTransaction=async(e)=>{
         e.preventDefault();
@@ -55,6 +68,10 @@ const Body = () => {
     useEffect(() => {
         if(state && state.token)  fetchUserExpenses();
     }, [state && state.token])
+
+    useEffect(() => {
+        currency();
+    }, [curr2])
 
     const fetchUserExpenses=async()=>{
         try{
@@ -209,6 +226,64 @@ const Body = () => {
                     </div>
                 </div>
                 <button type="button" className="btn btn-success mx-3">Expense Report</button>
+                <div style={{float:"right"}}>
+                   <label>Currency:</label> <select className="form-select select-lg" value={curr2} onChange={(e) => { setCurr2(e.target.value) }}>
+            <option selected>Select currency</option>
+    <option value="AFN">Afghan Afghani - ؋</option>
+    <option value="DZD">Algerian Dinar - دج</option>
+    <option value="ARS">Argentine Peso - $</option>
+    <option value="AMD">Armenian Dram - ֏</option>
+    <option value="AUD">Australian Dollar - $</option>
+    <option value="BSD">Bahamian Dollar - B$</option>
+    <option value="BHD">Bahraini Dinar - .د.ب</option>
+    <option value="BDT">Bangladeshi Taka - ৳</option>
+    <option value="BRL">Brazilian Real - R$</option>
+    <option value="GBP">British Pound Sterling - £</option>
+    <option value="BND">Brunei Dollar - B$</option>
+    <option value="CAD">Canadian Dollar - $</option>
+    <option value="CNY">Chinese Yuan - ¥</option>
+    <option value="COP">Colombian Peso - $</option>
+    <option value="HRK">Croatian Kuna - kn</option>
+    <option value="CZK">Czech Republic Koruna - Kč</option>
+    <option value="EUR">Euro - €</option>
+    <option value="HKD">Hong Kong Dollar - $</option>
+    <option value="INR">Indian Rupee - ₹</option>
+    <option value="IDR">Indonesian Rupiah - Rp</option>
+    <option value="IQD">Iraqi Dinar - د.ع</option>
+    <option value="ILS">Israeli New Sheqel - ₪</option>
+    <option value="JMD">Jamaican Dollar - J$</option>
+    <option value="JPY">Japanese Yen - ¥</option>
+    <option value="JOD">Jordanian Dinar - ا.د</option>
+    <option value="KWD">Kuwaiti Dinar - ك.د</option>
+    <option value="LBP">Lebanese Pound - £</option>
+    <option value="LYD">Libyan Dinar - د.ل</option>
+    <option value="MYR">Malaysian Ringgit - RM</option>
+    <option value="MUR">Mauritian Rupee - ₨</option>
+    <option value="MXN">Mexican Peso - $</option>
+    <option value="NPR">Nepalese Rupee - ₨</option>
+    <option value="NZD">New Zealand Dollar - $</option>
+    <option value="KPW">North Korean Won - ₩</option>
+    <option value="OMR">Omani Rial - .ع.ر</option>
+    <option value="PKR">Pakistani Rupee - ₨</option>
+    <option value="PHP">Philippine Peso - ₱</option>
+    <option value="PLN">Polish Zloty - zł</option>
+    <option value="QAR">Qatari Rial - ق.ر</option>
+    <option value="RUB">Russian Ruble - ₽</option>
+    <option value="SAR">Saudi Riyal - ﷼</option>
+    <option value="RSD">Serbian Dinar - din</option>
+    <option value="SGD">Singapore Dollar - $</option>
+    <option value="SOS">Somali Shilling - Sh.so.</option>
+    <option value="KRW">South Korean Won - ₩</option>
+    <option value="LKR">Sri Lankan Rupee - Rs</option>
+    <option value="SEK">Swedish Krona - kr</option>
+    <option value="CHF">Swiss Franc - CHf</option>
+    <option value="SYP">Syrian Pound - LS</option>
+    <option value="TZS">Tanzanian Shilling - TSh</option>
+    <option value="TND">Tunisian Dinar - ت.د</option>
+    <option value="TRY">Turkish Lira - ₺</option>
+    <option value="AED">United Arab Emirates Dirham - إ.د</option>
+    <option value="USD">US Dollar - $</option>
+</select></div>
             </div>
             <div className="container">
                 <table class="table my-5">
@@ -223,7 +298,7 @@ const Body = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <Expense expenses={expenses} setExpenses={setExpenses} />
+                        <Expense expenses={expenses} setExpenses={setExpenses} mul={mul} />
                     </tbody>
                 </table>
             </div>

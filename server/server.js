@@ -5,9 +5,7 @@ require('dotenv').config();
 // import connectToMongo from './db';
 const connectToMongo=require('./db.js');
 const app=express();
-app.use(cors({
-    origin:["http://localhost:3000"]
-}));
+app.use(cors());
 
 // database connection
 connectToMongo();
