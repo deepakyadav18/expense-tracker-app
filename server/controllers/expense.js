@@ -1,5 +1,11 @@
 const Expense=require("../models/expense");
+const cloudinary=require('cloudinary');
 
+cloudinary.config({
+    cloud_name:process.env.CLOUDINARY_NAME,
+    api_key:process.env.CLOUDINARY_KEY,
+    secret:process.env.CLOUDINARY_SECRET,
+})
 const addExpense= async(req,res)=>{
     
     const {type,
@@ -126,4 +132,14 @@ const deleteExpense=async(req,res)=>{
     }
 }
 
-module.exports={addExpense,showExpenses,updateExpense,deleteExpense};
+const uploadReceipt=async(req,res)=>{
+    // console.log("req files=>",req.files);
+    const result=await cloudinary.uploader(req.files.image.path);
+    console.log("uploaded image url=>",result);
+    res.json({
+        url:result.secure_url,
+        public_id:result.public_id
+    })
+}
+
+module.exports={addExpense,showExpenses,updateExpense,deleteExpense,uploadReceipt};

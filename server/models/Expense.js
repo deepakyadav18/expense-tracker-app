@@ -25,6 +25,7 @@ const expenseSchema = new Schema ({
     cat:{
         type:String,
         required:true,
+        
     },
     InterestType:{
         type:String,
@@ -32,8 +33,9 @@ const expenseSchema = new Schema ({
     percentage:{
         type:String,
     },
-    report:{
-        type:String,
+    receipt:{
+        url:String,
+        public_id:String,
     }
 
 

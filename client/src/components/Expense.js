@@ -26,6 +26,10 @@ const Expense = ({expenses,setExpenses,mul}) => {
         setExpenses(newExpenses);
     }
 
+    const handleReceipt=async(e)=>{
+        
+    }
+
 
     return (
         <>
