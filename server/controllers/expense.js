@@ -1,5 +1,6 @@
 const Expense=require("../models/expense");
 const cloudinary=require('cloudinary');
+const nodemailer=require('nodemailer');
 
 cloudinary.config({
     cloud_name:process.env.CLOUDINARY_NAME,
@@ -42,12 +43,47 @@ const addExpense= async(req,res)=>{
             cat,
             date,
         });
-        console.log("transaction=>",req.body);
         res.send(expense);
 
     } catch(err){
         console.log(err);
         res.status(400);
+    }
+}
+
+const addEmail=async(req,res)=>{            //No Response
+
+    const {type,
+        desc,
+        amount,
+        cat,
+        date,
+    email}=req.body;
+
+    try {
+        let transporter = nodemailer.createTransport({
+            service:"gmail",
+
+            auth: {
+              user: process.env.email, // generated ethereal user
+              pass: process.env.pass, // generated ethereal password
+            },
+          });
+        
+          // send mail with defined transport object
+          let info = await transporter.sendMail({
+            from: process.env.email, // sender address
+            to: email, // list of receivers
+            subject: "New Transaction Added.", // Subject line
+            html: `<p>A New Transaction Was Added On Date :- ${date}</p>
+            <p><br></p>
+            <p>Type:- ${type}</p>
+            <p>Description:- ${desc}</p>
+            <p>Amount:- ${amount}</p>
+            <p>Category: - ${cat}`, // html body
+          });
+    } catch (error) {
+        console.log(err);
     }
 }
 
@@ -132,6 +168,39 @@ const deleteExpense=async(req,res)=>{
     }
 }
 
+const deleteEmail=async(req,res)=>{             //No Response
+    let expense=await Expense.findById(req.params.id);
+    const {email}=req.body;
+    
+    try {
+        let transporter = nodemailer.createTransport({
+            service:"gmail",
+            
+            auth: {
+                user: process.env.email, // generated ethereal user
+                pass: process.env.pass, // generated ethereal password
+            },
+        });
+        
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: process.env.email, // sender address
+            to: email, // list of receivers
+            subject: "Transaction Deleted.", // Subject line
+            html: `<p>A Transaction Was Deleted On Date :- ${(expense.date).slice(0,10)}</p>
+            <p><br></p>
+            <p>Type:- ${expense.type}</p>
+            <p>Description:- ${expense.desc}</p>
+            <p>Amount:- ${expense.amount}</p>
+            <p>Category: - ${expense.cat}`, // html body
+        });
+        
+}
+catch (err) {
+    console.log(err);
+}
+}
+
 const uploadReceipt=async(req,res)=>{
     // console.log("req files=>",req.files);
     const result=await cloudinary.uploader(req.files.image.path);
@@ -142,4 +211,4 @@ const uploadReceipt=async(req,res)=>{
     })
 }
 
-module.exports={addExpense,showExpenses,updateExpense,deleteExpense,uploadReceipt};
+module.exports={addExpense,showExpenses,updateExpense,deleteExpense,uploadReceipt,addEmail,deleteEmail};

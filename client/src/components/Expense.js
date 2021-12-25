@@ -5,6 +5,8 @@ import { useLocation } from 'react-router-dom';
 const Expense = ({expenses,setExpenses,mul}) => {
 
     const [state,setState]=useContext(userContext);
+    var email="";
+    if(state!=null) {email=state.user.email;}
 
     const handleEdit= async(id)=>{
         const {data}=await axios.put(`http://localhost:8000/api/updateexpense/${id}`,{
@@ -17,6 +19,11 @@ const Expense = ({expenses,setExpenses,mul}) => {
 
     const handleDelete=async(id)=>{
 
+        const {send}=axios.post(`http://localhost:8000/api/deleteEmail/${id}`,{email},{
+            headers:{
+                Authorization:'Bearer '+state.token
+            }
+        });
         const {data}=await axios.delete(`http://localhost:8000/api/deleteexpense/${id}`,{
                 headers:{
                     Authorization:'Bearer '+state.token

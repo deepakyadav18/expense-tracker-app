@@ -8,11 +8,12 @@ import UserRoute from './routes/UserRoute';
 import { useHistory } from 'react-router-dom';
 import Expense from './Expense';
 const Body = () => {
-
+    var email="";
     const [state, setState] = useContext(userContext);
     const [type, setType] = useState("");
     const [InterestType, setInterestType] = useState("");
     const [desc, setDesc] = useState("");
+    if(state!=null) {email=state.user.email;}
     const [amount, setAmount] = useState("0");
     const [percentage, setPercentage] = useState("0");
     const [cat, setCat] = useState("");
@@ -37,7 +38,7 @@ const Body = () => {
         e.preventDefault();
 
         try {
-            const { data } = await axios.post("http://localhost:8000/api/addexpense", { type, desc, amount, cat, date }, {
+            const { data } = await axios.post("http://localhost:8000/api/addexpense", { type, desc, amount, cat, date}, {
                 headers: {
                     Authorization: 'Bearer ' + state.token
                 }
@@ -49,11 +50,11 @@ const Body = () => {
             else {
                 fetchUserExpenses();
                 toast.success("Expense added");
-            }
 
-        } catch (err) {
-            console.log(err);
-        }
+                const {send}=axios.post("http://localhost:8000/api/addEmail",{ type, desc, amount, cat, date,email }, {
+                    headers: {
+                        Authorization: 'Bearer ' + state.token
+                    }});
 
         setType("");
         setInterestType("");
@@ -62,6 +63,11 @@ const Body = () => {
         setCat("");
         setDate(Date.now());
         setDesc("");
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     useEffect(() => {
