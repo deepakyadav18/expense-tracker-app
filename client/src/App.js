@@ -15,6 +15,10 @@ function App() {
     <UserProvider>
       <Router>
         <Switch>
+        <Route exact path="/">
+            <ToastContainer position="top-center" />
+            <Login />
+          </Route>
           <Route exact path="/login">
             <ToastContainer position="top-center" />
             <Login />
@@ -25,7 +29,7 @@ function App() {
             <Register />
           </Route>
 
-          <Route exact path="/">
+          <Route exact path="/main">
             <Navbar />
             <ToastContainer position="top-center" />
             <Body />

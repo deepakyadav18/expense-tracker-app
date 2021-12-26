@@ -27,7 +27,21 @@ const addExpense= async(req,res)=>{
             break;
         }
     }
-
+    var flag1=true;
+    
+    for(var i=0;i<percentage.length;i++){
+        if((percentage[i]-'0')<0 || (percentage[i]-'0')>9){
+            flag1=false;
+            break;
+        }
+    }
+    if(percentage){
+        if(isNaN(percentage) || percentage[0]=='-'){
+            return res.json({
+                error:'Fill All The Required Details Correcty.',
+            })
+        }
+    }
     if(!desc.length || !amount.length || !flag || !type.length || !cat.length){
         return res.json({
             error:'Fill All The Required Details Correcty.',

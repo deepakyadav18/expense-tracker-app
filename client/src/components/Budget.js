@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify'
 import { useHistory } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css"
+import UserRoute from './routes/UserRoute';
 const Budget = () => {
     const [needs, setNeeds] = useState(50);
     const [wants, setWants] = useState(30);
@@ -15,9 +16,6 @@ const Budget = () => {
     const [swants, setSwants] = useState(0);
     const [state, setState] = useContext(userContext);
     const history = useHistory();
-    if(!state){
-        history.push('/login');
-    }
     const fetchTotalMoney = async () => {
         try {
             const { data } = await axios.get("http://localhost:8000/api/totalMoney", {
@@ -96,7 +94,7 @@ const Budget = () => {
 
 
     return (
-        <>
+        <UserRoute>
             <div className="container">
                 <h1 className="text-center my-3">Personal Expense Tracker</h1>
                 <div className="col text-center p-4">
@@ -248,7 +246,7 @@ const Budget = () => {
                     You Have Subceed Your Budget.
                 </div>}
             </div>
-        </>
+        </UserRoute>
     )
 }
 

@@ -31,9 +31,6 @@ const Body = () => {
     const [expenses, setExpenses] = useState([]);
     const history = useHistory();
 
-    if(!state){
-        history.push('/login');
-    }
     const currency = async () => {
         let { data } = await axios.get(`https://api.fastforex.io/fetch-one?from=${curr1}&to=${curr2}&api_key=f454927b42-879011f180-r4gbj6`);
 

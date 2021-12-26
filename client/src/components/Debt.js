@@ -28,9 +28,6 @@ const Debt = () => {
 
     const [expenses, setExpenses] = useState([]);
     const history = useHistory();
-    if(!state){
-        history.push('/login');
-    }
     const AddTransaction = async (e) => {
         e.preventDefault();
 

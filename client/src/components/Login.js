@@ -28,7 +28,7 @@ const Login = () => {
             // save in localStorage
             window.localStorage.setItem('auth',JSON.stringify(data))
 
-            history.push('/');
+            history.push('/main');
         } catch(err){
             toast.error(err.response.data)
         }
