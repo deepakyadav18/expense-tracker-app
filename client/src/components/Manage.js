@@ -58,13 +58,13 @@ const Manage = () => {
             }
             else{
                 toast.success("Password changed successfully.")
+                const {send}=axios.post(`http://localhost:8000/api/passEmail`,{email,name});
+                setNewp("");
+                setOldp("");
+                setConf("");
             }
-
-            const {send}=axios.post(`http://localhost:8000/api/passEmail`,{email,name});
             
-            setNewp("");
-            setOldp("");
-            setConf("");
+            
 
         } catch(err){
             console.log(err);

@@ -27,14 +27,7 @@ const addExpense= async(req,res)=>{
             break;
         }
     }
-    var flag1=true;
     
-    for(var i=0;i<percentage.length;i++){
-        if((percentage[i]-'0')<0 || (percentage[i]-'0')>9){
-            flag1=false;
-            break;
-        }
-    }
     if(percentage){
         if(isNaN(percentage) || percentage[0]=='-'){
             return res.json({

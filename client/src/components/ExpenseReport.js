@@ -1,12 +1,51 @@
 import React from 'react'
-import { useState} from 'react'
+import { useState,useContext } from 'react'
+import { Bar, Pie } from 'react-chartjs-2';
+import { userContext } from "../context/index";
+import { toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
+import axios from 'axios';
+import UserRoute from './routes/UserRoute';
 
 const ExpenseReport = () => {
 
     const [type, setType] = useState('');
-    const [cat,setCat]=useState('');
-    const [year,setYear]=useState('');
-    const [comp,setComp]=useState('');
+    const [state, setState] = useContext(userContext);
+    const [cat, setCat] = useState('');
+    const [year, setYear] = useState('');
+    const [comp, setComp] = useState('');
+    const [show, setShow] = useState(false);
+    const [monthReport, setMonthReport] = useState({});
+    const [yearReport,setYearReport]=useState({});
+
+    const monthlyReport=async()=>
+    {
+        const { data } = await axios.post("http://localhost:8000/api/monthReport", {cat,year}, {
+                headers: {
+                    Authorization: 'Bearer ' + state.token
+                }
+            });
+            if(data.error) toast.error(data.error);
+            else setMonthReport(data);
+    }
+
+    const yearlyReport=async()=>
+    {
+        const { data } = await axios.post("http://localhost:8000/api/yearReport", {cat,year}, {
+                headers: {
+                    Authorization: 'Bearer ' + state.token
+                }
+            });
+            if(data.error) toast.error(data.error);
+            else setYearReport(data);
+    }
+
+    const getReport=()=>
+    {
+        setShow(true);
+        if(comp==="month") monthlyReport();
+        else if(comp==="year") yearlyReport();
+    }
 
 
     return (
@@ -85,7 +124,7 @@ const ExpenseReport = () => {
                                         <div class="row g-3 align-items-center">
                                             <div class="col-auto" onChange={(e) => { setComp(e.target.value) }}>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" value="month" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
+                                                    <input class="form-check-input" value="month" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
                                                     <label class="form-check-label" for="flexRadioDefault1">
                                                         Monthwise Comparison
                                                     </label>
@@ -99,28 +138,204 @@ const ExpenseReport = () => {
                                             </div>
                                         </div>
                                         <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Year</label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <input value={year} onChange={(e) => { setYear(e.target.value) }} type="text" class="form-control" placeholder='Enter Year' />
-                                                </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">Year</label>
                                             </div>
-                                            <div class="row g-3 align-items-center">
-                                            <button type="button" class="btn btn-success">Generate Report</button>
+                                            <div class="col-auto">
+                                                <input value={year} onChange={(e) => { setYear(e.target.value) }} type="text" class="form-control" placeholder='Enter Year' />
                                             </div>
+                                        </div>
+                                        <div class="row g-3 align-items-center">
+                                            <button type="button" class="btn btn-success" onClick={getReport}>Generate Report</button>
+                                        </div>
                                     </div>
                                 </div>
+                                <hr />
+
+                                {comp=='month' && show===true?<div class="d-flex justify-content-around">
+                                    <div>
+                                        <Pie
+                                            data={
+                                                {
+                                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                                                    datasets: [
+                                                        {
+                                                            data: [monthReport.Jan, monthReport.Feb, monthReport.Mar, monthReport.Apr, monthReport.May, monthReport.Jun, monthReport.Jul, monthReport.Aug, monthReport.Sep, monthReport.Oct, monthReport.Nov, monthReport.Dec],
+                                                            backgroundColor: [
+                                                                'rgba(255, 99, 132, 0.2)',
+                                                                'rgba(54, 162, 235, 0.2)',
+                                                                'rgba(255, 206, 86, 0.2)',
+                                                                'rgba(75, 192, 192, 0.2)',
+                                                                'rgba(153, 102, 255, 0.2)',
+                                                                'rgba(255, 159, 64, 0.2)',
+                                                                'rgba(255, 99, 132, 0.2)',
+                                                                'rgba(54, 162, 235, 0.2)',
+                                                                'rgba(255, 206, 86, 0.2)',
+                                                                'rgba(75, 192, 192, 0.2)',
+                                                                'rgba(153, 102, 255, 0.2)',
+                                                                'rgba(255, 159, 64, 0.2)'
+
+
+                                                            ],
+                                                            borderColor: [
+                                                                'rgba(255, 99, 132, 1)',
+                                                                'rgba(54, 162, 235, 1)',
+                                                                'rgba(255, 206, 86, 1)',
+                                                                'rgba(75, 192, 192, 1)',
+                                                                'rgba(153, 102, 255, 1)',
+                                                                'rgba(255, 159, 64, 1)',
+                                                                'rgba(255, 99, 132, 1)',
+                                                                'rgba(54, 162, 235, 1)',
+                                                                'rgba(255, 206, 86, 1)',
+                                                                'rgba(75, 192, 192, 1)',
+                                                                'rgba(153, 102, 255, 1)',
+                                                                'rgba(255, 159, 64, 1)'
+                                                            ],
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                            height={400}
+                                            width={600}
+                                        />
+                                        <h3 class="text-center">Monthwise Category Pie Chart</h3>
+                                    </div>
+                                    <div>
+                                        <Bar
+                                            data={
+                                                {
+                                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                                                    datasets: [
+                                                        {
+                                                            label:"Expenditure",
+                                                            data: [monthReport.Jan, monthReport.Feb, monthReport.Mar, monthReport.Apr, monthReport.May, monthReport.Jun, monthReport.Jul, monthReport.Aug, monthReport.Sep, monthReport.Oct, monthReport.Nov, monthReport.Dec],
+                                                            backgroundColor: [
+                                                                'rgba(255, 99, 132, 0.2)',
+                                                                'rgba(54, 162, 235, 0.2)',
+                                                                'rgba(255, 206, 86, 0.2)',
+                                                                'rgba(75, 192, 192, 0.2)',
+                                                                'rgba(153, 102, 255, 0.2)',
+                                                                'rgba(255, 159, 64, 0.2)',
+                                                                'rgba(255, 99, 132, 0.2)',
+                                                                'rgba(54, 162, 235, 0.2)',
+                                                                'rgba(255, 206, 86, 0.2)',
+                                                                'rgba(75, 192, 192, 0.2)',
+                                                                'rgba(153, 102, 255, 0.2)',
+                                                                'rgba(255, 159, 64, 0.2)'
+
+
+                                                            ],
+                                                            borderColor: [
+                                                                'rgba(255, 99, 132, 1)',
+                                                                'rgba(54, 162, 235, 1)',
+                                                                'rgba(255, 206, 86, 1)',
+                                                                'rgba(75, 192, 192, 1)',
+                                                                'rgba(153, 102, 255, 1)',
+                                                                'rgba(255, 159, 64, 1)',
+                                                                'rgba(255, 99, 132, 1)',
+                                                                'rgba(54, 162, 235, 1)',
+                                                                'rgba(255, 206, 86, 1)',
+                                                                'rgba(75, 192, 192, 1)',
+                                                                'rgba(153, 102, 255, 1)',
+                                                                'rgba(255, 159, 64, 1)'
+                                                            ],
+                                                        }
+                                                    ],
+
+                                                }
+                                            }
+                                            options={{
+                                                scales: {
+                                                    yAxes: [{ ticks: { beginAtZero: true } }]
+                                                }
+                                            }}
+                                            height={400}
+                                            width={600}
+                                        />
+                                        <h3 class="text-center">Monthwise Category Bar Graph</h3>
+                                    </div>
+                                </div>:(comp=='year' && show===true?<div class="d-flex justify-content-around">
+                                    <div>
+                                        <Pie
+                                            data={
+                                                {
+                                                    labels: ['Previous Year', 'Current Year'],
+                                                    datasets: [
+                                                        {
+                                                            data: [yearReport.year0,yearReport.year1],
+                                                            backgroundColor: [
+                                                                'rgba(255, 99, 132, 0.2)',
+                                                                'rgba(54, 162, 235, 0.2)'
+                                                            ],
+                                                            borderColor: [
+                                                                'rgba(255, 99, 132, 1)',
+                                                                'rgba(54, 162, 235, 1)'
+                                                            ],
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                            height={400}
+                                            width={600}
+                                        />
+                                        <h3 class="text-center">Yearwise Category Pie Chart</h3>
+                                    </div>
+                                    <div>
+                                        <Bar
+                                            data={
+                                                {
+                                                    labels: ['Previous Year', 'Current Year'],
+                                                    datasets: [
+                                                        {
+                                                            label:cat,
+                                                            data: [yearReport.year0,yearReport.year1],
+                                                            backgroundColor: [
+                                                                'rgba(255, 99, 132, 0.2)',
+                                                                'rgba(54, 162, 235, 0.2)'
+                                                            ],
+                                                            borderColor: [
+                                                                'rgba(255, 99, 132, 1)',
+                                                                'rgba(54, 162, 235, 1)'
+                                                            ],
+                                                        }
+                                                    ],
+
+                                                }
+                                            }
+                                            options={{
+                                                scales: {
+                                                    yAxes: [{ ticks: { beginAtZero: true } }]
+                                                }
+                                            }}
+                                            height={400}
+                                            width={600}
+                                        />
+                                        <h3 class="text-center">Yearwise Category Bar Graph</h3>
+                                    </div>
+                                </div>:<></>)}
+
+
+
+
+
+
+                                
+
+
+
                             </div>
-                            <hr/>
+
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Close</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick={()=>{setShow(false);
+                            setType("");
+                            setYear("");
+                            setCat("");}}>Close</button>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
         </>
     )
 }
