@@ -3,14 +3,18 @@ const User=require("../models/user")
 const jwt=require('jsonwebtoken')
 const Expense=require("../models/expense");
 const Budget=require("../models/Budget");
+const nodemailer=require('nodemailer');
 const {defaultBudget}=require('./budget');
+
+
 const register =async(req,res)=>{
-    // console.log("Register endpoint =>",req.body);
-    const {name,email,password}=req.body;
+
+    const {name,email,password,conf}=req.body;
 
     // validation
     if(!name) return res.status(400).send("Name is required");
-    if(!password || password.length<6) return res.status(400).send("Password is required and length should be atleast 6 characters long");
+    if(!password || password.length<6 || password.length>30) return res.status(400).send("Password is required and it's length should be atleast 6 characters and atmost 30 characters long");
+    if(conf!=password) return res.status(400).send("Given Passwords do not match.")
     const exist=await User.findOne({email});
     if(exist) return res.status(400).send("Email is taken")
 
@@ -29,15 +33,44 @@ const register =async(req,res)=>{
     try{
         await user.save();
         await budget.save();
-        console.log("Registered user=>",user)
+        // console.log("Registered user=>",user)
         return res.json({
             ok:true,
         })
     } catch(err){
-        console.log("Register failed");
-        return res.status(400).send("Error.Try Again.")
+        return res.status(400).send("Internal Server Error.");
     }
 };
+
+const regEmail=async(req,res)=>{
+
+    const {email,name}=req.body;
+
+    try {
+        let transporter = nodemailer.createTransport({
+            service:"gmail",
+
+            auth: {
+              user: process.env.email, // generated ethereal user
+              pass: process.env.pass, // generated ethereal password
+            },
+          });
+        
+          // send mail with defined transport object
+          let info = await transporter.sendMail({
+            from: process.env.email, // sender address
+            to: email, // list of receivers
+            subject: "New Registration", // Subject line
+            html: `<p>Thank you For Registering On Expense Tracker.</p>
+            <p><br></p>
+            <p>Email:- ${email}</p>
+            <p>Name:- ${name}</p>`, // html body
+          });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const login = async(req,res)=>{
     try{
@@ -89,14 +122,49 @@ const deleteUser=async(req,res)=>{
     }
 }
 
+const delEmail=async(req,res)=>{
+
+    const {email,name}=req.body;
+
+    try {
+        let transporter = nodemailer.createTransport({
+            service:"gmail",
+
+            auth: {
+              user: process.env.email, // generated ethereal user
+              pass: process.env.pass, // generated ethereal password
+            },
+          });
+        
+          // send mail with defined transport object
+          let info = await transporter.sendMail({
+            from: process.env.email, // sender address
+            to: email, // list of receivers
+            subject: "User Deletion", // Subject line
+            html: `<p>Your Account on Expense Tracker Has Been Deleted Successfully.</p>
+            <p><br></p>
+            <p>Email:- ${email}</p>
+            <p>Name:- ${name}</p>`, // html body
+          });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const changePassword=async(req,res)=>{
     
-    const {name,email,oldp,newp}=req.body;
+    const {name,email,oldp,newp,conf}=req.body;
 
     try {
 
-         if(!oldp ||!newp ) return res.json({
+         if(!oldp || !newp || !conf ) return res.json({
             error:'Fill All The Given Blanks.',
+        })
+
+        if(newp!=conf)
+        return res.json({
+            error:`Given New Passwords Don't Match.`,
         })
         //return res.status(400).send("Fill All The Given Blanks Correctly.");
 
@@ -125,6 +193,36 @@ const changePassword=async(req,res)=>{
     
 }
 
+const passEmail=async(req,res)=>{
+
+    const {email,name}=req.body;
+
+    try {
+        let transporter = nodemailer.createTransport({
+            service:"gmail",
+
+            auth: {
+              user: process.env.email, // generated ethereal user
+              pass: process.env.pass, // generated ethereal password
+            },
+          });
+        
+          // send mail with defined transport object
+          let info = await transporter.sendMail({
+            from: process.env.email, // sender address
+            to: email, // list of receivers
+            subject: "Change Password", // Subject line
+            html: `<p>Your Account Password on Expense Tracker Has Been Changed Successfully.</p>
+            <p><br></p>
+            <p>Email:- ${email}</p>
+            <p>Name:- ${name}</p>`, // html body
+          });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const editUser=async(req,res)=>{
     const {name,email}=req.body;
     const {_id}=req.user;
@@ -150,4 +248,35 @@ const editUser=async(req,res)=>{
    }
 }
 
-module.exports={register,login,currentUser,deleteUser,changePassword,editUser}
+const editEmail=async(req,res)=>{
+
+    const {email,name}=req.body;
+
+    try {
+        let transporter = nodemailer.createTransport({
+            service:"gmail",
+
+            auth: {
+              user: process.env.email, // generated ethereal user
+              pass: process.env.pass, // generated ethereal password
+            },
+          });
+        
+          // send mail with defined transport object
+          let info = await transporter.sendMail({
+            from: process.env.email, // sender address
+            to: email, // list of receivers
+            subject: "Change Details", // Subject line
+            html: `<p>Your Account Details on Expense Tracker Has Been Changed Successfully.</p>
+            <p><br></p>
+            <p>Email:- ${email}</p>
+            <p>Name:- ${name}</p>`, // html body
+          });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+module.exports={register,login,currentUser,deleteUser,changePassword,editUser,regEmail,delEmail,passEmail,editEmail};

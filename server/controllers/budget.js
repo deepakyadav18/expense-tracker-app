@@ -23,11 +23,11 @@ const editBudget=async(req,res)=>{
         const {wants,needs,saves}=req.body;
         const newBudget={};
 
-        // if(!(wants>=0 && wants<=100 && needs>=0 && needs<=100 && saves>=0 && saves<=100 && (wants+needs+saves)==100)){
-        //     return res.json({
-        //         error:"Enter all percentages accordingly."
-        //     })
-        // }
+        if(!(wants>=0 && wants<=100 && needs>=0 && needs<=100 && saves>=0 && saves<=100 && (wants+needs+saves)==100)){
+            return res.json({
+                error:"Enter all percentages accordingly."
+            })
+        }
         
         if(wants){
             newBudget.wants=wants;

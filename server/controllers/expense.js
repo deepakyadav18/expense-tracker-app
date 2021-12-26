@@ -5,7 +5,7 @@ const nodemailer=require('nodemailer');
 cloudinary.config({
     cloud_name:process.env.CLOUDINARY_NAME,
     api_key:process.env.CLOUDINARY_KEY,
-    secret:process.env.CLOUDINARY_SECRET,
+    api_secret:process.env.CLOUDINARY_SECRET,
 })
 const addExpense= async(req,res)=>{
     
@@ -15,7 +15,8 @@ const addExpense= async(req,res)=>{
         amount,
         percentage,
         cat,
-        date,}=req.body;
+        date,
+        receipt}=req.body;
 
     const {_id}=req.user;
     var flag=true;
@@ -42,6 +43,7 @@ const addExpense= async(req,res)=>{
             percentage,
             cat,
             date,
+            receipt
         });
         res.send(expense);
 
@@ -51,7 +53,7 @@ const addExpense= async(req,res)=>{
     }
 }
 
-const addEmail=async(req,res)=>{            //No Response
+const addEmail=async(req,res)=>{
 
     const {type,
         desc,
@@ -83,7 +85,7 @@ const addEmail=async(req,res)=>{            //No Response
             <p>Category: - ${cat}`, // html body
           });
     } catch (error) {
-        console.log(err);
+        console.log(error);
     }
 }
 
@@ -91,56 +93,6 @@ const showExpenses=async(req,res)=>{
     try{
         const expenses=await Expense.find({user:req.user._id})
         res.json(expenses);
-    } catch(err){
-        console.log(err);
-    }
-}
-
-const updateExpense=async(req,res)=>{
-    const {_id}=req.user;
-    try{
-        const {type,
-        InterestType,
-        desc,
-        amount,
-        percentage,
-        cat,
-        date,}=req.body;
-
-        const newExpense={};
-        if(type){
-            newExpense.type=type;
-        }
-        if(cat){
-            newExpense.cat=cat;
-        }
-        if(amount){
-            newExpense.amount=amount;
-        }
-        if(desc){
-            newExpense.desc=desc;
-        }
-        if(InterestType){
-            newExpense.InterestType=InterestType;
-        }
-        if(percentage){
-            newExpense.percentage=percentage;
-        }
-        if(date){
-            newExpense.date=date;
-        }
-
-        let expense=await Expense.findById(req.params.id);
-        if(!expense){
-            return res.status(404).send("Not Found");
-        }
-        if(expense.user.toString()!==_id){
-            return res.status(401).send("Not Allowed");
-        }
-
-        expense=await Expense.findByIdAndUpdate(req.params.id,{$set:newExpense},{new:true});
-        res.json({expense});
-        
     } catch(err){
         console.log(err);
     }
@@ -168,7 +120,7 @@ const deleteExpense=async(req,res)=>{
     }
 }
 
-const deleteEmail=async(req,res)=>{             //No Response
+const deleteEmail=async(req,res)=>{
     let expense=await Expense.findById(req.params.id);
     const {email}=req.body;
     
@@ -187,7 +139,7 @@ const deleteEmail=async(req,res)=>{             //No Response
             from: process.env.email, // sender address
             to: email, // list of receivers
             subject: "Transaction Deleted.", // Subject line
-            html: `<p>A Transaction Was Deleted On Date :- ${(expense.date).slice(0,10)}</p>
+            html: `<p>A Transaction Was Deleted On Date :- ${expense.date}</p>
             <p><br></p>
             <p>Type:- ${expense.type}</p>
             <p>Description:- ${expense.desc}</p>
@@ -203,7 +155,7 @@ catch (err) {
 
 const uploadReceipt=async(req,res)=>{
     // console.log("req files=>",req.files);
-    const result=await cloudinary.uploader(req.files.image.path);
+    const result=await cloudinary.uploader.upload(req.files.image.path);
     console.log("uploaded image url=>",result);
     res.json({
         url:result.secure_url,
@@ -211,4 +163,4 @@ const uploadReceipt=async(req,res)=>{
     })
 }
 
-module.exports={addExpense,showExpenses,updateExpense,deleteExpense,uploadReceipt,addEmail,deleteEmail};
+module.exports={addExpense,showExpenses,deleteExpense,uploadReceipt,addEmail,deleteEmail};

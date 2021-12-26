@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect ,useRef} from 'react';
 import { userContext } from "../context/index";
 import axios from 'axios';
 import { toast } from 'react-toastify'
@@ -7,7 +7,11 @@ import "react-toastify/dist/ReactToastify.css"
 import UserRoute from './routes/UserRoute';
 import { useHistory } from 'react-router-dom';
 import Expense from './Expense';
+import ExpenseReport from './ExpenseReport';
 const Body = () => {
+
+    const ref = useRef();
+
     var email="";
     const [state, setState] = useContext(userContext);
     const [type, setType] = useState("");
@@ -21,10 +25,15 @@ const Body = () => {
     const [curr1, setCurr1] = useState("INR");
     const [curr2, setCurr2] = useState("INR");
     const [mul, setMul] = useState(1);
+    const [receipt,setReceipt]=useState("");
+    const [loading,setLoading]=useState(false);
 
     const [expenses, setExpenses] = useState([]);
     const history = useHistory();
 
+    if(!state){
+        history.push('/login');
+    }
     const currency = async () => {
         let { data } = await axios.get(`https://api.fastforex.io/fetch-one?from=${curr1}&to=${curr2}&api_key=f454927b42-879011f180-r4gbj6`);
 
@@ -38,7 +47,7 @@ const Body = () => {
         e.preventDefault();
 
         try {
-            const { data } = await axios.post("http://localhost:8000/api/addexpense", { type, desc, amount, cat, date}, {
+            const { data } = await axios.post("http://localhost:8000/api/addexpense", { type, desc, amount, cat, date,receipt}, {
                 headers: {
                     Authorization: 'Bearer ' + state.token
                 }
@@ -50,19 +59,19 @@ const Body = () => {
             else {
                 fetchUserExpenses();
                 toast.success("Expense added");
-
                 const {send}=axios.post("http://localhost:8000/api/addEmail",{ type, desc, amount, cat, date,email }, {
                     headers: {
                         Authorization: 'Bearer ' + state.token
                     }});
-
-        setType("");
+                    setType("");
         setInterestType("");
         setAmount("");
         setPercentage("");
         setCat("");
         setDate(Date.now());
         setDesc("");
+        setReceipt("");
+        ref.current.value = "";
             }
 
         } catch (err) {
@@ -89,6 +98,28 @@ const Body = () => {
             console.log("user expenses=>", data);
         } catch (err) {
             console.log(err);
+        }
+    }
+
+    const handleImage=async(e)=>{
+        const file=e.target.files[0];
+        let formData=new FormData();
+        formData.append('image',file);
+        // console.log([...formData]);
+        setLoading(true)
+        try {
+            const {data}=await axios.post("http://localhost:8000/api/uploadReceipt",formData,{
+                headers: {
+                    Authorization: 'Bearer ' + state.token
+                }
+            });
+            // console.log("Uploaded image=>",data);
+            setReceipt(data.url)
+            console.log(data.url);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
         }
     }
 
@@ -149,6 +180,14 @@ const Body = () => {
                                                 </div>
                                                 <div class="col-auto">
                                                     <input type="date" class="form-control" value={date} onChange={(e) => { setDate(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div class="row g-3 align-items-center">
+                                                <div class="col-auto">
+                                                    <label class="col-form-label">Receipt</label>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <input onChange={(e)=>handleImage(e)} ref={ref} type="file" accept='images/*' class="form-control"/>
                                                 </div>
                                             </div>
                                             {type == 'Debt/Loan' ? <><div class="row g-3 align-items-center">
@@ -224,13 +263,13 @@ const Body = () => {
 
                             </div>
                             <div class="modal-footer">
-                                <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss Transaction</button>
-                                <button onClick={AddTransaction} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary">Add Transaction</button>
+                                <button disabled={loading} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss Transaction</button>
+                                <button disabled={loading} onClick={AddTransaction} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary">Add Transaction</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button type="button" className="btn btn-success mx-3">Expense Report</button>
+                <ExpenseReport/>
                 <div style={{ float: "right" }}>
                     <label>Currency:</label> <select className="form-select select-lg" value={curr2} onChange={(e) => { setCurr2(e.target.value) }}>
                         <option selected>Select currency</option>

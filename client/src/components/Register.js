@@ -11,6 +11,7 @@ const Register = () => {
     const [name,setName]=useState('');
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
+    const [conf,setConf]=useState('');
     const [state,setState]=useContext(userContext);
     const [ok,setOk]=useState(false);
     const history=useHistory();
@@ -21,11 +22,15 @@ const Register = () => {
         try{
             console.log(name,email,password);
             const {data}=await axios.post(`http://localhost:8000/api/register`,{
-                name,email,password
+                name,email,password,conf
             })
+
+            const {send}=axios.post(`http://localhost:8000/api/regEmail`,{email,name});
+
             setName('');
             setEmail('');
             setPassword('');
+            setConf('');
             setOk(data.ok);
         } catch(err){
             toast.error(err.response.data)
@@ -59,6 +64,10 @@ const Register = () => {
                         <div className="form-group p-2">
                             <label className="text-muted">Password</label>
                             <input value={password} onChange={(e)=> setPassword(e.target.value)} type="password" className="form-control" placeholder="Enter Password"></input>
+                        </div>
+                        <div className="form-group p-2">
+                            <label className="text-muted">Password</label>
+                            <input value={conf} onChange={(e)=> setConf(e.target.value)} type="password" className="form-control" placeholder="Confirm Password"></input>
                         </div>
                         <div className="form-group p-2">
                             <button className="btn btn-primary col-12">

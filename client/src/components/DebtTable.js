@@ -1,6 +1,7 @@
 import React from 'react'
+import DebtData from './DebtData'
 
-const DebtTable = () => {
+const DebtTable = ({expenses,setExpenses}) => {
     return (
         <>
             <table class="table my-5">
@@ -18,7 +19,7 @@ const DebtTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    <DebtData expenses={expenses} setExpenses={setExpenses}/>
                 </tbody>
             </table>
         </>

@@ -34,8 +34,7 @@ const expenseSchema = new Schema ({
         type:String,
     },
     receipt:{
-        url:String,
-        public_id:String,
+        type:String,
     }
 
 

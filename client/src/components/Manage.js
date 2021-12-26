@@ -13,11 +13,13 @@ const Manage = () => {
     const [state,setState]=useContext(userContext);
     const [oldp,setOldp]=useState("");
     const [newp,setNewp]=useState("");
+    const [conf,setConf]=useState("");
     const [name,setName]=useState(auth.user.name);
     const [email,setEmail]=useState(auth.user.email);
 
     const deleteAccount=async()=>{
         try{
+
             const {data}=await axios.delete("http://localhost:8000/api/deleteUser",{
                 headers:{
                     Authorization:'Bearer '+state.token
@@ -26,6 +28,9 @@ const Manage = () => {
                     email:state.user.email
                 }
             })
+            
+            const {send}=axios.post(`http://localhost:8000/api/delEmail`,{email,name});
+
             setState(null);
             history.push('/login');
             history.go(0);
@@ -41,7 +46,8 @@ const Manage = () => {
                 email:state.user.email,
                 name:state.user.name,
                 newp:newp,
-                oldp:oldp
+                oldp:oldp,
+                conf:conf
             },{
                 headers:{
                     Authorization:'Bearer '+state.token
@@ -53,9 +59,12 @@ const Manage = () => {
             else{
                 toast.success("Password changed successfully.")
             }
+
+            const {send}=axios.post(`http://localhost:8000/api/passEmail`,{email,name});
             
             setNewp("");
             setOldp("");
+            setConf("");
 
         } catch(err){
             console.log(err);
@@ -82,11 +91,16 @@ const Manage = () => {
             }
             else{
                 
+
                 var auth=JSON.parse(localStorage.getItem('auth'));
                 auth.user.name=name;
                 auth.user.email=email;
                 localStorage.setItem('auth',JSON.stringify(auth));
-                history.go(0);
+                toast.success("Details changed successfully. Changes Will Take Place In a Few Seconds.");
+                const {send}=axios.post(`http://localhost:8000/api/editEmail`,{email,name});
+                setInterval(() => {
+                    history.go(0);
+                }, 5000);
             }
             
 
@@ -139,9 +153,11 @@ const Manage = () => {
                                     <div class="modal-body">
                                         <div class="d-flex flex-column bd-highlight mb-3">
                                             <label for="inputPassword5" className="form-label">Enter Old Password</label>
-                                            <input value={oldp} onChange={(e)=>setOldp(e.target.value)} type="password" class="form-control" />
+                                            <input value={oldp} onChange={(e)=>setOldp(e.target.value)} type="password" placeholder="Enter Old Password" class="form-control" />
                                             <label for="inputPassword5" className="form-label">Enter New Password</label>
-                                            <input value={newp} onChange={(e)=>setNewp(e.target.value)} type="password" class="form-control" />
+                                            <input value={newp} onChange={(e)=>setNewp(e.target.value)} type="password" placeholder="Enter New Password" class="form-control" />
+                                            <label for="inputPassword5" className="form-label">Confirm New Password</label>
+                                            <input value={conf} onChange={(e)=>setConf(e.target.value)} type="password" placeholder="Confirm New Password" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="modal-footer">
