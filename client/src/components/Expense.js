@@ -40,7 +40,7 @@ const Expense = ({expenses,setExpenses,mul}) => {
                 {/* <button onClick={()=>{handleEdit(expense._id)}} type="button" className="btn btn-primary btn-sm mx-1">Edit
                 </button>
                  */}
-                {expense.receipt!==""?<a href={expense.receipt} target="_blank" class="btn btn-sm btn-primary" role="button">Open Receipt</a>:<></>}
+                {expense.receipt!==""?<a href={expense.receipt} target="_blank" className="btn btn-sm btn-primary" role="button">Open Receipt</a>:<></>}
                 <button onClick={()=>{handleDelete(expense._id)}} type="button" className="btn btn-danger btn-sm mx-1">Delete
                 </button>
                 </td>

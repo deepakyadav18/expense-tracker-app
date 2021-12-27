@@ -7,10 +7,25 @@ import Register from "./components/Register";
 import Manage from "./components/Manage";
 import Debt from "./components/Debt";
 import { ToastContainer } from "react-toastify";
+import { useState } from "react";
 import "antd/dist/antd.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Budget from "./components/Budget";
 function App() {
+
+  const [mode,setMode]=useState('light');
+
+  const toggleMode=()=>{
+    if(mode==='light'){
+      setMode('dark');
+      document.body.style.backgroundColor='#121212';
+    }
+    else{
+      setMode('light');
+      document.body.style.backgroundColor='white';
+    }
+  }
+
   return (
     <UserProvider>
       <Router>
@@ -30,27 +45,27 @@ function App() {
           </Route>
 
           <Route exact path="/main">
-            <Navbar />
+            <Navbar mode={mode} toggleMode={toggleMode}/>
             <ToastContainer position="top-center" />
-            <Body />
+            <Body mode={mode}/>
           </Route>
           
           <Route exact path="/manage">
-            <Navbar />
+            <Navbar mode={mode} toggleMode={toggleMode}/>
             <ToastContainer position="top-center" />
-            <Manage/>
+            <Manage mode={mode}/>
           </Route>
 
           <Route exact path="/budget">
-            <Navbar />
+            <Navbar mode={mode} toggleMode={toggleMode}/>
             <ToastContainer position="top-center" />
-            <Budget/>
+            <Budget mode={mode}/>
           </Route>
 
           <Route exact path="/debt">
-            <Navbar />
+            <Navbar mode={mode} toggleMode={toggleMode}/>
             <ToastContainer position="top-center" />
-            <Debt/>
+            <Debt mode={mode}/>
           </Route>
 
         </Switch>

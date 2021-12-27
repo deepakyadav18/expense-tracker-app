@@ -9,7 +9,7 @@ import UserRoute from './routes/UserRoute';
 import { useHistory } from 'react-router-dom';
 
 
-const Debt = () => {
+const Debt = ({mode}) => {
 
     const ref = useRef();
 
@@ -106,61 +106,76 @@ const Debt = () => {
         }
     }
 
+    var color;
+    if(mode==='light'){
+        color='#121212'
+    }
+    else{
+        color='white'
+    }
+    var color2;
+    if(mode==='dark'){
+        color2='#121212'
+    }
+    else{
+        color2='white'
+    }
+
     return (
         <UserRoute>
-            <h1 className="text-center my-3">Personal Expense Tracker</h1>
+            <h1 className="text-center my-3" style={{color:color}}>Personal Expense Tracker</h1>
             <div className="col text-center p-4">
-                <h3>Manage Debt And Loan Repayments</h3>
+                <h3 style={{color:color}}>Manage Debt And Loan Repayments</h3>
             </div>
 
             <div className="container">
                 <button type="button" className="btn btn-primary mx-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Expense
                 </button>
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Add Transaction</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-xl">
+                        <div className="modal-content" style={{backgroundColor:color2}}>
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="staticBackdropLabel" style={{color:color}}>Add Transaction</h5>
+                                <button type="button" className={`btn-close ${mode==='dark'?('btn-close-white'):('')}`} data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="d-flex flex-column bd-highlight mb-3" >
-                                    <div class="p-2 bd-highlight">
-                                        <div class="d-flex justify-content-around">
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Transaction Type</label>
+                            <div className="modal-body">
+                                <div className="d-flex flex-column bd-highlight mb-3" >
+                                    <div className="p-2 bd-highlight">
+                                        <div className="d-flex justify-content-around">
+                                            <div className="row g-3 align-items-center">
+                                                <div className="col-auto">
+                                                    <label className="col-form-label" style={{color:color}}>Transaction Type</label>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <select value={type} onChange={(e) => { setType(e.target.value) }} class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                                <div className="col-auto">
+                                                    <select value={type} onChange={(e) => { setType(e.target.value) }} className="form-select form-select-sm" aria-label=".form-select-sm example">
                                                         <option selected>Select Transaction Type</option>
                                                         <option value="Debt/Loan">Debt/Loan</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Description</label>
+                                            <div className="row g-3 align-items-center">
+                                                <div className="col-auto">
+                                                    <label className="col-form-label" style={{color:color}}>Description</label>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <input type="text" class="form-control" placeholder='Enter Description' value={desc} onChange={(e) => { setDesc(e.target.value) }} />
+                                                <div className="col-auto">
+                                                    <input type="text" className="form-control" placeholder='Enter Description' value={desc} onChange={(e) => { setDesc(e.target.value) }} />
                                                 </div>
                                             </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Principal Amount</label>
+                                            <div className="row g-3 align-items-center">
+                                                <div className="col-auto">
+                                                    <label className="col-form-label" style={{color:color}}>Principal Amount</label>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <input type="text" class="form-control" placeholder='Enter Transaction Amount' value={amount} onChange={(e) => { setAmount(e.target.value) }} />
+                                                <div className="col-auto">
+                                                    <input type="text" className="form-control" placeholder='Enter Transaction Amount' value={amount} onChange={(e) => { setAmount(e.target.value) }} />
                                                 </div>
 
                                             </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Interest Type</label>
+                                            <div className="row g-3 align-items-center">
+                                                <div className="col-auto">
+                                                    <label className="col-form-label" style={{color:color}}>Interest Type</label>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                                <div className="col-auto">
+                                                    <select className="form-select form-select-sm" aria-label=".form-select-sm example">
                                                         <option selected value="Simple">Simple Interest</option>
                                                     </select>
                                                 </div>
@@ -168,38 +183,38 @@ const Debt = () => {
 
                                         </div>
                                     </div>
-                                    <div class="p-2 bd-highlight">
-                                        <div class="d-flex justify-content-around">
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Transaction Date</label>
+                                    <div className="p-2 bd-highlight">
+                                        <div className="d-flex justify-content-around">
+                                            <div className="row g-3 align-items-center">
+                                                <div className="col-auto">
+                                                    <label className="col-form-label" style={{color:color}}>Transaction Date</label>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <input type="date" class="form-control" value={date} onChange={(e) => { setDate(e.target.value) }} />
-                                                </div>
-                                            </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Receipt</label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <input onChange={(e) => handleImage(e)} ref={ref} type="file" accept='images/*' class="form-control" />
+                                                <div className="col-auto">
+                                                    <input type="date" className="form-control" value={date} onChange={(e) => { setDate(e.target.value) }} />
                                                 </div>
                                             </div>
-                                                <div class="row g-3 align-items-center">
-                                                    <div class="col-auto">
-                                                        <label class="col-form-label">Interest In Percentage</label>
+                                            <div className="row g-3 align-items-center">
+                                                <div className="col-auto">
+                                                    <label className="col-form-label" style={{color:color}}>Receipt</label>
+                                                </div>
+                                                <div className="col-auto">
+                                                    <input onChange={(e) => handleImage(e)} ref={ref} type="file" accept='images/*' className="form-control" />
+                                                </div>
+                                            </div>
+                                                <div className="row g-3 align-items-center">
+                                                    <div className="col-auto">
+                                                        <label className="col-form-label" style={{color:color}}>Interest In Percentage</label>
                                                     </div>
-                                                    <div class="col-auto">
-                                                        <input type="text" class="form-control" placeholder='Enter Interest Percentage' value={percentage} onChange={(e) => { setPercentage(e.target.value) }} />
+                                                    <div className="col-auto">
+                                                        <input type="text" className="form-control" placeholder='Enter Interest Percentage' value={percentage} onChange={(e) => { setPercentage(e.target.value) }} />
                                                     </div>
                                                 </div>
-                                            <div class="row g-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <label class="col-form-label">Transaction Catergory</label>
+                                            <div className="row g-3 align-items-center">
+                                                <div className="col-auto">
+                                                    <label className="col-form-label" style={{color:color}}>Transaction Catergory</label>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <select value={cat} onChange={(e) => { setCat(e.target.value) }} class="form-select form-select-sm" aria-label=".form-select-sm example">
+                                                <div className="col-auto">
+                                                    <select value={cat} onChange={(e) => { setCat(e.target.value) }} className="form-select form-select-sm" aria-label=".form-select-sm example">
                                                         <option selected>Select Debt/Loan Option</option>
                                                         <option value="Interest Collection">Interest Collection</option>
                                                         <option value="Debt">Debt</option>
@@ -217,14 +232,14 @@ const Debt = () => {
                                 </div>
 
                             </div>
-                            <div class="modal-footer">
-                                <button disabled={loading} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss Transaction</button>
-                                <button disabled={loading} onClick={AddTransaction} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary">Add Transaction</button>
+                            <div className="modal-footer">
+                                <button disabled={loading} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" className="btn btn-secondary" data-bs-dismiss="modal">Dismiss Transaction</button>
+                                <button disabled={loading} onClick={AddTransaction} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" className="btn btn-primary">Add Transaction</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <DebtTable expenses={expenses} setExpenses={setExpenses} />
+                <DebtTable expenses={expenses} setExpenses={setExpenses} mode={mode} />
             </div>
         </UserRoute>
     )

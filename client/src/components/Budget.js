@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import { useHistory } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css"
 import UserRoute from './routes/UserRoute';
-const Budget = () => {
+const Budget = ({mode}) => {
     const [needs, setNeeds] = useState(50);
     const [wants, setWants] = useState(30);
     const [saves, setSaves] = useState(20);
@@ -92,77 +92,84 @@ const Budget = () => {
         }
     }, [state && state.token])
 
+    var color;
+    if(mode==='light'){
+        color='black'
+    }
+    else{
+        color='white'
+    }
 
     return (
         <UserRoute>
             <div className="container">
-                <h1 className="text-center my-3">Personal Expense Tracker</h1>
+                <h1 className="text-center my-3" style={{color:color}}>Personal Expense Tracker</h1>
                 <div className="col text-center p-4">
-                    <h3>Manage Budget</h3>
+                    <h3 style={{color:color}}>Manage Budget</h3>
                 </div>
                 <div className="container">
                     <div className="d-flex justify-content-center">
-                        <div class="alert alert-success text-center" role="alert" style={{ width: "100%" }}>
+                        <div className="alert alert-success text-center" role="alert" style={{ width: "100%" }}>
                             <b>Total Income: {income}</b>
                         </div>
                     </div>
-                    <div class="text-center">
+                    <div className="text-center">
                         <button type="button" className="btn btn-primary mx-3 my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Adjust Budget
                         </button>
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Adjust Budget</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div className="modal-dialog modal-lg">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="staticBackdropLabel">Adjust Budget</h5>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <form class="d-flex justify-content-between">
-                                            <div class="form-group">
+                                    <div className="modal-body">
+                                        <form className="d-flex justify-content-between">
+                                            <div className="form-group">
                                                 <label for="per_nes">Enter Neccesities Percentage</label>
-                                                <input value={needs} onChange={(e) => { setNeeds(e.target.value) }} type="text" class="form-control" placeholder="Enter Percentage" v />
+                                                <input value={needs} onChange={(e) => { setNeeds(e.target.value) }} type="text" className="form-control" placeholder="Enter Percentage" v />
                                             </div>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 <label for="per_want">Enter Wants Percentage</label>
-                                                <input value={wants} onChange={(e) => { setWants(e.target.value) }} type="text" class="form-control" placeholder="Enter Percentage" />
+                                                <input value={wants} onChange={(e) => { setWants(e.target.value) }} type="text" className="form-control" placeholder="Enter Percentage" />
                                             </div>
-                                            <div class="form-group">
+                                            <div className="form-group">
                                                 <label for="(100-per_nes-per_want)">Enter Savings Percentage</label>
-                                                <input value={saves} onChange={(e) => { setSaves(e.target.value) }} type="text" class="form-control" placeholder="Percentage" />
+                                                <input value={saves} onChange={(e) => { setSaves(e.target.value) }} type="text" className="form-control" placeholder="Percentage" />
                                             </div>
 
                                         </form>
 
                                     </div>
-                                    <div class="modal-footer">
-                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" class="btn btn-primary" onClick={editBudget}>Save Changes</button>
+                                    <div className="modal-footer">
+                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" className="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
+                                        <button data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button" className="btn btn-primary" onClick={editBudget}>Save Changes</button>
                                     </div>
                                 </div></div> </div>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
+                    <div className="d-flex justify-content-between">
+                        <div className="alert alert-secondary" role="alert" style={{ width: "40%" }}>
                             <b>Neccesities(Spent): {sneeds}</b>
                         </div>
-                        <div class="alert alert-primary" role="alert"
+                        <div className="alert alert-primary" role="alert"
                             style={{ width: "40%" }}>
                             <b>Neccesities(Calculated): {(needs * income) / 100}</b>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
+                    <div className="d-flex justify-content-between">
+                        <div className="alert alert-secondary" role="alert" style={{ width: "40%" }}>
                             <b>Wants(Spent): {swants}</b>
                         </div>
-                        <div class="alert alert-primary" role="alert"
+                        <div className="alert alert-primary" role="alert"
                             style={{ width: "40%" }}>
                             <b>Wants(Calculated): {(wants * income) / 100}</b>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="alert alert-secondary" role="alert" style={{ width: "40%" }}>
+                    <div className="d-flex justify-content-between">
+                        <div className="alert alert-secondary" role="alert" style={{ width: "40%" }}>
                             <b>Savings(Saved): {income - sneeds - swants}</b>
                         </div>
-                        <div class="alert alert-primary" role="alert"
+                        <div className="alert alert-primary" role="alert"
                             style={{ width: "40%" }}>
                             <b>Savings(Calculated): {(saves * income) / 100}</b>
                         </div>
@@ -171,7 +178,7 @@ const Budget = () => {
                 </div>
 
             </div>
-            <div class="d-flex justify-content-around">
+            <div className="d-flex justify-content-around">
                 <div>
                     <Pie
                         data={
@@ -198,7 +205,7 @@ const Budget = () => {
                         height={400}
                         width={600}
                     />
-                    <h3 class="text-center">User Calculated Budget Pie Chart</h3>
+                    <h3 className="text-center" style={{color:color}}>User Calculated Budget Pie Chart</h3>
                 </div>
                 <div>
                     <Pie
@@ -226,23 +233,23 @@ const Budget = () => {
                         height={400}
                         width={600}
                     />
-                    <h3 class="text-center">User Expenditure Pie Chart</h3>
+                    <h3 className="text-center" style={{color:color}}>User Expenditure Pie Chart</h3>
                 </div>
             </div>
-            <div class="container">
-                {sneeds <= (needs * income) / 100 ? <div class="alert alert-success" role="alert">
+            <div className="container">
+                {sneeds <= (needs * income) / 100 ? <div className="alert alert-success" role="alert">
                     Your Neccesities Budget Is Under Control.
-                </div> : <div class="alert alert-danger" role="alert">
+                </div> : <div className="alert alert-danger" role="alert">
                     You Have Exceeded Your Neccesities Budget.
                 </div>}
-                {swants <= (wants * income) / 100 ? <div class="alert alert-success" role="alert">
+                {swants <= (wants * income) / 100 ? <div className="alert alert-success" role="alert">
                     Your Wants Budget Is Under Control.
-                </div> : <div class="alert alert-danger" role="alert">
+                </div> : <div className="alert alert-danger" role="alert">
                     you Have Exceeded Your Wants Budget.
                 </div>}
-                {income - sneeds - swants >= (saves * income) / 100 ? <div class="alert alert-success" role="alert">
+                {income - sneeds - swants >= (saves * income) / 100 ? <div className="alert alert-success" role="alert">
                     Your Savings Are Under Control.
-                </div> : <div class="alert alert-danger" role="alert">
+                </div> : <div className="alert alert-danger" role="alert">
                     You Have Subceed Your Budget.
                 </div>}
             </div>

@@ -1,10 +1,18 @@
 import React from 'react'
 import DebtData from './DebtData'
 
-const DebtTable = ({expenses,setExpenses}) => {
+const DebtTable = ({expenses,setExpenses,mode}) => {
+
+    var color;
+    if(mode==='light'){
+        color='black'
+    }
+    else{
+        color='white'
+    }
     return (
         <>
-            <table class="table my-5">
+            <table className="table my-5" style={{color:color}}>
                 <thead>
                     <tr>
                         <th scope="col">Transaction Id</th>

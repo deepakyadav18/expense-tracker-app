@@ -3,7 +3,6 @@ import { useState, useContext } from 'react'
 import { Link,useHistory } from 'react-router-dom';
 import axios from 'axios'
 import {toast} from 'react-toastify'
-import {ToastContainer} from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css"
 import {userContext} from "../context/index";
 
@@ -35,7 +34,7 @@ const Login = () => {
     }
 
     if(state && state.token){
-        history.push('/');
+        history.push('/main');
     }
     
 

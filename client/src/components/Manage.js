@@ -1,12 +1,12 @@
 import {React,useState} from 'react';
-import { Link,useHistory } from 'react-router-dom';
-import {useContext,useEffect} from 'react'
+import { useHistory } from 'react-router-dom';
+import {useContext} from 'react'
 import {userContext} from "../context/index";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 
-const Manage = () => {
+const Manage = ({mode}) => {
     var auth=JSON.parse(localStorage.getItem('auth'));
 
     const history=useHistory();
@@ -16,6 +16,21 @@ const Manage = () => {
     const [conf,setConf]=useState("");
     const [name,setName]=useState(auth.user.name);
     const [email,setEmail]=useState(auth.user.email);
+
+    var color;
+    if(mode==='light'){
+        color='black'
+    }
+    else{
+        color='white'
+    }
+    var color2;
+    if(mode==='dark'){
+        color2='#121212'
+    }
+    else{
+        color2='white'
+    }
 
     const deleteAccount=async()=>{
         try{
@@ -113,9 +128,9 @@ const Manage = () => {
 
     return (
         <div className="container-fluid">
-            <h1 className="text-center my-3">Personal Expense Tracker</h1>
+            <h1 className="text-center my-3" style={{color:color}}>Personal Expense Tracker</h1>
             <div className="col text-center p-4">
-                <h3>Manage Account Settings</h3>
+                <h3 style={{color:color}}>Manage Account Settings</h3>
             </div>
 
             <div className="row py-2">
@@ -123,12 +138,12 @@ const Manage = () => {
 
                     <form>
                         <div className="form-group p-2">
-                            <label className="text-muted">Your Name</label>
+                            <label style={{color:color}}>Your Name</label>
                             <input value={name} onChange={(e)=>setName(e.target.value)} type="text" className="form-control" placeholder="Enter Name"></input>
                         </div>
 
                         <div className="form-group p-2">
-                            <label className="text-muted">Email Address</label>
+                            <label style={{color:color}}>Email Address</label>
                             <input value={email} onChange={(e)=>setEmail(e.target.value)} type="email" className="form-control" placeholder="Enter Email Address"></input>
                         </div>
 
@@ -138,53 +153,53 @@ const Manage = () => {
                             </button>
                         </div>
                     </form>
-                    <div class="d-flex justify-content-between my-4">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <div className="d-flex justify-content-between my-4">
+                        <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             Change Password
                         </button>
 
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="#staticBackdropLabel">Change Password</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content" style={{backgroundColor:color2}}>
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="#staticBackdropLabel" style={{color:color}}>Change Password</h5>
+                                        <button type="button" className={`btn-close ${mode==='dark'?('btn-close-white'):('')}`} data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="d-flex flex-column bd-highlight mb-3">
-                                            <label for="inputPassword5" className="form-label">Enter Old Password</label>
-                                            <input value={oldp} onChange={(e)=>setOldp(e.target.value)} type="password" placeholder="Enter Old Password" class="form-control" />
-                                            <label for="inputPassword5" className="form-label">Enter New Password</label>
-                                            <input value={newp} onChange={(e)=>setNewp(e.target.value)} type="password" placeholder="Enter New Password" class="form-control" />
-                                            <label for="inputPassword5" className="form-label">Confirm New Password</label>
-                                            <input value={conf} onChange={(e)=>setConf(e.target.value)} type="password" placeholder="Confirm New Password" class="form-control" />
+                                    <div className="modal-body">
+                                        <div className="d-flex flex-column bd-highlight mb-3">
+                                            <label for="inputPassword5" className="form-label" style={{color:color}}>Enter Old Password</label>
+                                            <input value={oldp} onChange={(e)=>setOldp(e.target.value)} type="password" placeholder="Enter Old Password" className="form-control" />
+                                            <label for="inputPassword5" className="form-label" style={{color:color}}>Enter New Password</label>
+                                            <input value={newp} onChange={(e)=>setNewp(e.target.value)} type="password" placeholder="Enter New Password" className="form-control" />
+                                            <label for="inputPassword5" className="form-label" style={{color:color}}>Confirm New Password</label>
+                                            <input value={conf} onChange={(e)=>setConf(e.target.value)} type="password" placeholder="Confirm New Password" className="form-control" />
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-                                        <button onClick={changePassword} type="button" class="btn btn-primary" data-bs-dismiss="modal">Change Password</button>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
+                                        <button onClick={changePassword} type="button" className="btn btn-primary" data-bs-dismiss="modal">Change Password</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                        <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
                             Delete Account
                         </button>
 
-                        <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="#staticBackdropLabel">Delete Account</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div className="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content" style={{backgroundColor:color2}}>
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="#staticBackdropLabel" style={{color:color}}>Delete Account</h5>
+                                        <button type="button" className={`btn-close ${mode==='dark'?('btn-close-white'):('')}`} data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                       <h4>Are you sure you want to delete your account?</h4>
-                                       <span>You will lose all your Expenses Data.</span>
+                                    <div className="modal-body">
+                                       <h4 style={{color:color}}>Are you sure you want to delete your account?</h4>
+                                       <span style={{color:color}}>You will lose all your Expenses Data.</span>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
-                                        <button onClick={state&& state.token && deleteAccount} type="button" class="btn btn-danger">Delete Account</button>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
+                                        <button onClick={state&& state.token && deleteAccount} type="button" className="btn btn-danger">Delete Account</button>
                                     </div>
                                 </div>
                             </div>

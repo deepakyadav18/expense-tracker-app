@@ -1,8 +1,8 @@
 import React from 'react'
-import { useContext,useEffect } from 'react'
+import { useContext } from 'react'
 import { Link ,useHistory } from 'react-router-dom'
 import { userContext } from '../context'
-const Navbar = () => {
+const Navbar = ({mode,toggleMode}) => {
   const history=useHistory();
   const [state,setState]=useContext(userContext);
 
@@ -11,29 +11,35 @@ const Navbar = () => {
     setState(null);
     history.push('/login');
   }
-
+  var color;
+  if(mode==='light'){
+    color='black'
+  }
+  else{
+    color='white'
+  }
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className={`navbar navbar-expand-lg navbar-${mode} bg-${mode}`}>
         <div className="container-fluid">
-          <a className="navbar-brand" href="/main">Expense Tracker</a>
+          <Link className="navbar-brand" to="/main">Expense Tracker</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/main">Home</a>
+                <Link className="nav-link active" aria-current="page" to="/main">Home</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/budget">Budget</a>
+                <Link className="nav-link active" aria-current="page" to="/budget">Budget</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/debt">Loan/Debt Management</a>
+                <Link className="nav-link active" aria-current="page" to="/debt">Loan/Debt Management</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/manage">Manage Account</a>
+                <Link className="nav-link active" aria-current="page" to="/manage">Manage Account</Link>
               </li>
             </ul>
 
@@ -41,8 +47,14 @@ const Navbar = () => {
             {state!==null ? (
               <ul className="nav navbar-nav navbar-right">
                 <li>
-                    <div className="btn-nav">
-                      <h5><span className="badge bg-light text-dark ">Hello, {state.user.name}</span></h5>
+                  <div className={`btn-nav form-check form-switch text-${mode==='light'?'dark':'light'} mx-2 my-2`}>
+                    <input className="form-check-input" onClick={toggleMode} type="checkbox" id="flexSwitchCheckDefault"/>
+                    <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Enable Dark Mode</label>
+                  </div>
+                </li>
+                <li>
+                    <div className="btn-nav px-2 my-1.5">
+                      <h5><span className={`badge bg-${mode==='light'?'light':'dark'} text-dark} `} style={{color:color}}>Hello, {state.user.name}</span></h5>
                     </div>
                 </li>
                 <li>
@@ -66,7 +78,6 @@ const Navbar = () => {
             </ul>
             )}
 
-            
           </div>
         </div>
       </nav>

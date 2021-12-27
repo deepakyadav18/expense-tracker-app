@@ -37,7 +37,7 @@ const DebtData = ({expenses,setExpenses}) => {
                 <td>{expense.percentage}</td>
                 <td>{Math.round((Number(expense.amount)*Number(expense.percentage))/100)}</td>
                 <td>{(expense.date).slice(0,10)}</td>
-                <td>{expense.receipt!==""?<a href={expense.receipt} target="_blank" class="btn btn-sm btn-primary" role="button">Open Receipt</a>:<></>}
+                <td>{expense.receipt!==""?<a href={expense.receipt} target="_blank" className="btn btn-sm btn-primary" role="button">Open Receipt</a>:<></>}
                 <button onClick={()=>{handleDelete(expense._id)}} type="button" className="btn btn-danger btn-sm mx-1">Delete
                 </button>
                 </td>
