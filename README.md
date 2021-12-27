@@ -4,6 +4,7 @@ This app helps you to track your financial expenses efficiently.
 - You can set your budget according to your needs and savings.
 - You can manage your loans and debts.
 - You can visualize your expenses graphically and compare your expenses monthwise and yearwise.
+- You can use the travel mode for exchanging currencies according to the place of travel.
 
 ## Steps for using this app
 1. Clone it in your local system.
