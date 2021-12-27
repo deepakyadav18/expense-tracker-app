@@ -16,11 +16,9 @@ const Body = ({mode}) => {
     var email="";
     const [state, setState] = useContext(userContext);
     const [type, setType] = useState("");
-    const [InterestType, setInterestType] = useState("");
     const [desc, setDesc] = useState("");
     if(state!=null) {email=state.user.email;}
     const [amount, setAmount] = useState("0");
-    const [percentage, setPercentage] = useState("0");
     const [cat, setCat] = useState("");
     const [date, setDate] = useState(Date.now());
     const [curr1, setCurr1] = useState("INR");
@@ -61,9 +59,7 @@ const Body = ({mode}) => {
                         Authorization: 'Bearer ' + state.token
                     }});
                     setType("");
-                    setInterestType("");
                     setAmount("");
-                    setPercentage("");
                     setCat("");
                     setDate(Date.now());
                     setDesc("");
@@ -158,7 +154,6 @@ const Body = ({mode}) => {
                                                         <option selected>Select Transaction Type</option>
                                                         <option value="Debit">Debit</option>
                                                         <option value="Credit">Credit</option>
-                                                        <option value="Debt/Loan">Debt/Loan</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -199,25 +194,6 @@ const Body = ({mode}) => {
                                                     <input onChange={(e)=>handleImage(e)} ref={ref} type="file" accept='images/*' className="form-control"/>
                                                 </div>
                                             </div>
-                                            {type == 'Debt/Loan' ? <><div className="row g-3 align-items-center">
-                                                <div className="col-auto">
-                                                    <label className="col-form-label" style={{color:color}}>Interest Type</label>
-                                                </div>
-                                                <div className="col-auto">
-                                                    <select value={InterestType} onChange={(e) => { setInterestType(e.target.value) }} className="form-select form-select-sm" aria-label=".form-select-sm example">
-                                                        <option selected value="Simple">Simple Interest</option>
-                                                        <option value="Compound">Compound Interest</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                                <div className="row g-3 align-items-center">
-                                                    <div className="col-auto">
-                                                        <label className="col-form-label" style={{color:color}}>Interest In Percentage</label>
-                                                    </div>
-                                                    <div className="col-auto">
-                                                        <input type="text" className="form-control" placeholder='Enter Interest Percentage' value={percentage} onChange={(e) => { setPercentage(e.target.value) }} />
-                                                    </div>
-                                                </div></> : <></>}
                                             <div className="row g-3 align-items-center">
                                                 <div className="col-auto">
                                                     <label className="col-form-label" style={{color:color}}>Transaction Catergory</label>
@@ -251,17 +227,10 @@ const Body = ({mode}) => {
                                                                 <option value="Investments">Investments</option>
                                                                 <option value="Loan Interest">Loan Interest</option>
                                                                 <option value="Other Expenses">Other Expense</option>
-                                                            </select> : (type === 'Debt/Loan' ?
-                                                                <select value={cat} onChange={(e) => { setCat(e.target.value) }} className="form-select form-select-sm" aria-label=".form-select-sm example">
-                                                                    <option selected>Select Debt/Loan Option</option>
-                                                                    <option value="Debt Collection">Debt Collection</option>
-                                                                    <option value="Debt">Debt</option>
-                                                                    <option value="Loan">Loan</option>
-                                                                    <option value="Repayment">Repayment</option>
-                                                                </select> :
+                                                            </select> :
                                                                 <select className="form-select form-select-sm" aria-label=".form-select-sm example">
                                                                     <option selected>Select Type First</option>
-                                                                </select>))}
+                                                                </select>)}
 
                                                 </div>
                                             </div>

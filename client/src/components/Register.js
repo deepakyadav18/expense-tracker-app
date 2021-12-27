@@ -66,7 +66,7 @@ const Register = () => {
                             <input value={password} onChange={(e)=> setPassword(e.target.value)} type="password" className="form-control" placeholder="Enter Password"></input>
                         </div>
                         <div className="form-group p-2">
-                            <label className="text-muted">Password</label>
+                            <label className="text-muted">Confirm Password</label>
                             <input value={conf} onChange={(e)=> setConf(e.target.value)} type="password" className="form-control" placeholder="Confirm Password"></input>
                         </div>
                         <div className="form-group p-2">

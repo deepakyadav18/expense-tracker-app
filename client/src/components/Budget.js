@@ -179,6 +179,34 @@ const Budget = ({mode}) => {
 
             </div>
             <div className="d-flex justify-content-around">
+            <div>
+                    <Pie
+                        data={
+                            {
+                                labels: ['Needs', 'Wants', 'Savings'],
+                                datasets: [
+                                    {
+                                        label: 'Budget Pie Chart',
+                                        data: [sneeds, swants, income - sneeds - swants],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.2)',
+                                            'rgba(54, 162, 235, 0.2)',
+                                            'rgba(255, 206, 86, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)'
+                                        ],
+                                    }
+                                ]
+                            }
+                        }
+                        height={400}
+                        width={600}
+                    />
+                    <h3 className="text-center" style={{color:color}}>User Expenditure Pie Chart</h3>
+                </div>
                 <div>
                     <Pie
                         data={
@@ -207,34 +235,6 @@ const Budget = ({mode}) => {
                     />
                     <h3 className="text-center" style={{color:color}}>User Calculated Budget Pie Chart</h3>
                 </div>
-                <div>
-                    <Pie
-                        data={
-                            {
-                                labels: ['Needs', 'Wants', 'Savings'],
-                                datasets: [
-                                    {
-                                        label: 'Budget Pie Chart',
-                                        data: [sneeds, swants, income - sneeds - swants],
-                                        backgroundColor: [
-                                            'rgba(255, 99, 132, 0.2)',
-                                            'rgba(54, 162, 235, 0.2)',
-                                            'rgba(255, 206, 86, 0.2)'
-                                        ],
-                                        borderColor: [
-                                            'rgba(255, 99, 132, 1)',
-                                            'rgba(54, 162, 235, 1)',
-                                            'rgba(255, 206, 86, 1)'
-                                        ],
-                                    }
-                                ]
-                            }
-                        }
-                        height={400}
-                        width={600}
-                    />
-                    <h3 className="text-center" style={{color:color}}>User Expenditure Pie Chart</h3>
-                </div>
             </div>
             <div className="container">
                 {sneeds <= (needs * income) / 100 ? <div className="alert alert-success" role="alert">
@@ -245,12 +245,12 @@ const Budget = ({mode}) => {
                 {swants <= (wants * income) / 100 ? <div className="alert alert-success" role="alert">
                     Your Wants Budget Is Under Control.
                 </div> : <div className="alert alert-danger" role="alert">
-                    you Have Exceeded Your Wants Budget.
+                    You Have Exceeded Your Wants Budget.
                 </div>}
                 {income - sneeds - swants >= (saves * income) / 100 ? <div className="alert alert-success" role="alert">
                     Your Savings Are Under Control.
                 </div> : <div className="alert alert-danger" role="alert">
-                    You Have Subceed Your Budget.
+                    You Have Subceeded Your Savings Budget.
                 </div>}
             </div>
         </UserRoute>

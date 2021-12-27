@@ -187,7 +187,7 @@ const Debt = ({mode}) => {
                                         <div className="d-flex justify-content-around">
                                             <div className="row g-3 align-items-center">
                                                 <div className="col-auto">
-                                                    <label className="col-form-label" style={{color:color}}>Transaction Date</label>
+                                                    <label className="col-form-label" style={{color:color}}>Repayment Date</label>
                                                 </div>
                                                 <div className="col-auto">
                                                     <input type="date" className="form-control" value={date} onChange={(e) => { setDate(e.target.value) }} />

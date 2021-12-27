@@ -84,7 +84,7 @@ const addEmail=async(req,res)=>{
             from: process.env.email, // sender address
             to: email, // list of receivers
             subject: "New Transaction Added.", // Subject line
-            html: `<p>A New Transaction Was Added On Date :- ${date}</p>
+            html: `<p>A New Transaction Was Added Corresponding To Date :- ${date}</p>
             <p><br></p>
             <p>Type:- ${type}</p>
             <p>Description:- ${desc}</p>
@@ -146,7 +146,7 @@ const deleteEmail=async(req,res)=>{
             from: process.env.email, // sender address
             to: email, // list of receivers
             subject: "Transaction Deleted.", // Subject line
-            html: `<p>A Transaction Was Deleted On Date :- ${(expense.date).slice(0,10)}</p>
+            html: `<p>A Transaction Was Deleted Corresponding To Date :- ${(expense.date.toString()).slice(0,15)}</p>
             <p><br></p>
             <p>Type:- ${expense.type}</p>
             <p>Description:- ${expense.desc}</p>
