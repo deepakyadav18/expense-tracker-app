@@ -98,7 +98,7 @@ const Debt = ({mode}) => {
             });
             // console.log("Uploaded image=>",data);
             setReceipt(data.url)
-            console.log(data.url);
+            // console.log(data.url);
             setLoading(false);
         } catch (error) {
             console.log(error);

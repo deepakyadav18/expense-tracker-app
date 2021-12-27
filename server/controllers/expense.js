@@ -146,7 +146,7 @@ const deleteEmail=async(req,res)=>{
             from: process.env.email, // sender address
             to: email, // list of receivers
             subject: "Transaction Deleted.", // Subject line
-            html: `<p>A Transaction Was Deleted On Date :- ${expense.date}</p>
+            html: `<p>A Transaction Was Deleted On Date :- ${(expense.date).slice(0,10)}</p>
             <p><br></p>
             <p>Type:- ${expense.type}</p>
             <p>Description:- ${expense.desc}</p>
@@ -163,7 +163,7 @@ catch (err) {
 const uploadReceipt=async(req,res)=>{
     // console.log("req files=>",req.files);
     const result=await cloudinary.uploader.upload(req.files.image.path);
-    console.log("uploaded image url=>",result);
+    // console.log("uploaded image url=>",result);
     res.json({
         url:result.secure_url,
         public_id:result.public_id

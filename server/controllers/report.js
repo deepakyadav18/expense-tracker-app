@@ -23,7 +23,7 @@ const monthReport=async(req,res)=>{
         };
         expenses.forEach(expense => {
             if(expense.cat===cat && ((expense.date).toString()).slice(11,15)===year){
-                console.log((expense.date).toString());
+                // console.log((expense.date).toString());
                 a[(((expense.date).toString()).slice(4,7))]+=Number(expense.amount);
             }
         });

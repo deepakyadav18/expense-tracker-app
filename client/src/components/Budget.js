@@ -24,7 +24,7 @@ const Budget = ({mode}) => {
                 }
             })
             setIncome(data);
-            console.log("Income ", data);
+            // console.log("Income ", data);
         } catch (err) {
             console.log(err);
         }
@@ -54,7 +54,7 @@ const Budget = ({mode}) => {
             })
             setSneeds(data.need);
             setSwants(data.want);
-            console.log("n, w ", data);
+            // console.log("n, w ", data);
         } catch (err) {
             console.log(err);
         }
@@ -74,7 +74,7 @@ const Budget = ({mode}) => {
                 setSaves(data.saves);
                 setWants(data.wants);
                 setNeeds(data.needs);
-                console.log("N, w, s ", data);
+                // console.log("N, w, s ", data);
             }
             getBudget();
 

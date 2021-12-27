@@ -69,7 +69,7 @@ const deleteDebtEmail = async (req, res) => {
             from: process.env.email, // sender address
             to: email, // list of receivers
             subject: "Debt/Loan Deleted.", // Subject line
-            html: `<p>A Debt/Loan Was Deleted For Repayment Date :- ${expense.date}</p>
+            html: `<p>A Debt/Loan Was Deleted For Repayment Date :- ${(expense.date).slice(0,10)}</p>
             <p><br></p>
             <p>Type:- ${expense.type}</p>
             <p>Description:- ${expense.desc}</p>

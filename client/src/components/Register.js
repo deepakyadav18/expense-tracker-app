@@ -20,7 +20,7 @@ const Register = () => {
         e.preventDefault();
         
         try{
-            console.log(name,email,password);
+            // console.log(name,email,password);
             const {data}=await axios.post(`http://localhost:8000/api/register`,{
                 name,email,password,conf
             })

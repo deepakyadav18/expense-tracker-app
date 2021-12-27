@@ -35,7 +35,6 @@ const Body = ({mode}) => {
     const currency = async () => {
         let { data } = await axios.get(`https://api.fastforex.io/fetch-one?from=${curr1}&to=${curr2}&api_key=f454927b42-879011f180-r4gbj6`);
 
-        console.log(data.result[curr2])
         setMul(data.result[curr2]);
         setCurr1(curr2);
         setCurr2(curr2);
@@ -93,7 +92,6 @@ const Body = ({mode}) => {
                 }
             })
             setExpenses(data);
-            console.log("user expenses=>", data);
         } catch (err) {
             console.log(err);
         }
@@ -113,7 +111,6 @@ const Body = ({mode}) => {
             });
             // console.log("Uploaded image=>",data);
             setReceipt(data.url)
-            console.log(data.url);
             setLoading(false);
         } catch (error) {
             console.log(error);
