@@ -13,7 +13,7 @@ This app helps you to track your financial expenses efficiently.
 3. Now go to http://localhost:3000 to use the app.
 
 ## Technologies Used
-1.MongoDB
-2.ExpressJS
-3.ReactJS
-4.NodeJS
+1. MongoDB
+2. ExpressJS
+3. ReactJS
+4. NodeJS
